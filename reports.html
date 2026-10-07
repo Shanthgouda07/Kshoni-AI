@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Report Generator Engine — Automated GR / GSR Statutory Report Drafting">
+    <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+    <meta name="robots" content="noindex, nofollow">
+  <title>Statutory Report Generator | Kshoni AI • CMPDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="govt-top-header-mount"></div>
+  <div class="app-layout">
+    <!-- Sidebar dynamically rendered -->
+    <div id="sidebar-mount"></div>
+
+    <main class="main-content">
+      <!-- Header dynamically rendered -->
+      <div id="header-mount"></div>
+
+      <div class="content-body">
+        <div class="reports-layout">
+          <!-- Left Controls & Template Config Panel -->
+          <div>
+            <div class="card mb-lg">
+              <div class="card-header">
+                <h3 class="card-title">1. Report Parameters</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div>
+                  <label class="form-label">Report Template Standard</label>
+                  <select class="form-select" id="report-template" onchange="ReportsPage.onTemplateChange()">
+                    <option value="gr">Geological Report (GR) — Full Mine Plan</option>
+                    <option value="gsr">Geological Study Report (GSR) — Preliminary</option>
+                    <option value="feasi">Feasibility & Resource Estimation Report</option>
+                    <option value="mcp">Mine Closure & Environmental Plan</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label">Target Subsidiary</label>
+                  <select class="form-select" id="report-subsidiary" onchange="ReportsPage.onSubsidiaryChange()">
+                    <option value="BCCL">BCCL — Bharat Coking Coal Ltd (Jharia)</option>
+                    <option value="SECL">SECL — South Eastern Coalfields Ltd (Korba)</option>
+                    <option value="MCL">MCL — Mahanadi Coalfields Ltd (Talcher)</option>
+                    <option value="CCL">CCL — Central Coalfields Ltd (Ranchi)</option>
+                    <option value="NCL">NCL — Northern Coalfields Ltd (Singrauli)</option>
+                    <option value="ECL">ECL — Eastern Coalfields Ltd (Raniganj)</option>
+                    <option value="WCL">WCL — Western Coalfields Ltd (Nagpur)</option>
+                    <option value="NEC">NEC — North Eastern Coalfields (Margherita)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label">Mine Block</label>
+                  <select class="form-select" id="report-block">
+                    <option value="Jharia Block IX">Jharia Coalfield — Block IX Open Cast</option>
+                    <option value="Gevra Expansion">Gevra Expansion OC Mine (Korba)</option>
+                    <option value="Kaniha Sector B">Kaniha Sector B (Talcher)</option>
+                    <option value="Jayant OC Mine">Jayant OC Mine (Singrauli)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label">Include AI Generated Modules</label>
+                  <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+                    <label class="flex align-center gap-xs"><input type="checkbox" checked id="opt-unfc"> UNFC 111/122 Reserve Matrix</label>
+                    <label class="flex align-center gap-xs"><input type="checkbox" checked id="opt-litho"> Borehole Lithology Stratigraphy</label>
+                    <label class="flex align-center gap-xs"><input type="checkbox" checked id="opt-quality"> Proximate & Ultimate Assay Tables</label>
+                    <label class="flex align-center gap-xs"><input type="checkbox" checked id="opt-comp"> Statutory Compliance Audit Checklist</label>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary w-full mt-sm" onclick="ReportsPage.generateDraft()" id="btn-generate-report">
+                  ⚡ Auto-Draft Report via AI
+                </button>
+              </div>
+            </div>
+
+            <!-- Table of Contents Nav Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Document Navigation</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem;" id="toc-list">
+                <a href="#sec-1" class="text-tertiary hover-gold" style="padding: 4px 8px; border-radius: 4px;">1. Executive Summary & Location</a>
+                <a href="#sec-2" class="text-tertiary hover-gold" style="padding: 4px 8px; border-radius: 4px;">2. Regional & Local Stratigraphy</a>
+                <a href="#sec-3" class="text-tertiary hover-gold" style="padding: 4px 8px; border-radius: 4px;">3. Seam Quality & Proximate Assays</a>
+                <a href="#sec-4" class="text-tertiary hover-gold" style="padding: 4px 8px; border-radius: 4px;">4. Reserve Estimation (UNFC 111/122)</a>
+                <a href="#sec-5" class="text-tertiary hover-gold" style="padding: 4px 8px; border-radius: 4px;">5. Statutory Compliance Checklist</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Paper Preview & Edit Pane -->
+          <div>
+            <div class="card-header flex flex-between align-center mb-md" style="background: transparent; padding: 0;">
+              <div>
+                <span class="badge badge-success">● AI Draft Generated</span>
+                <span style="font-size: 0.82rem; color: var(--text-tertiary); margin-left: 8px;">Click any paragraph to edit content directly</span>
+              </div>
+              <div class="flex gap-xs">
+                <button class="btn btn-ghost btn-sm" onclick="App.exportDatasetCSV('reserves')">📊 Export CSV Data</button>
+                <button class="btn btn-ghost btn-sm" onclick="ReportsPage.saveDraft()">💾 Save Draft</button>
+                <button class="btn btn-secondary btn-sm" onclick="ReportsPage.auditCompliance()">✅ Run Compliance Audit</button>
+                <button class="btn btn-primary btn-sm" onclick="ReportsPage.exportPDF()">📄 Export Official PDF</button>
+              </div>
+            </div>
+
+            <!-- Official Report Paper (Light Mode) -->
+            <div class="report-paper" id="report-paper">
+              <!-- Official Header Banner -->
+              <div class="report-header-banner">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                  <img src="assets/images/coal_mine_emblem.svg" alt="Coal Mine Logo" style="height: 56px; width: 56px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));" />
+                  <div>
+                    <div style="font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; color: #854D0E; text-transform: uppercase;">Central Mine Planning & Design Institute Limited</div>
+                    <div style="font-size: 0.72rem; color: #64748B; text-transform: uppercase;">A Subsidiary of Coal India Limited • Govt. of India Enterprise</div>
+                    <h2 style="font-size: 1.3rem; font-weight: 800; margin-top: 4px; color: #0F172A;" id="doc-title">GEOLOGICAL REPORT (GR) ON EXPLORATION FOR COAL</h2>
+                    <div style="font-size: 0.88rem; color: #854D0E; font-weight: 600;" id="doc-subtitle">Jharia Coalfield • Block IX Open Cast Sector • BCCL Region</div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div class="badge" style="background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;">DOC-ID: CMPDI/GR/2026/042</div>
+                  <div style="font-size: 0.75rem; color: #64748B; margin-top: 6px;" id="doc-date">Date: 08 September 2026</div>
+                </div>
+              </div>
+
+              <!-- Section 1 -->
+              <div class="report-section" id="sec-1">
+                <div class="report-section-title">
+                  <span>1. EXECUTIVE SUMMARY & GEOGRAPHICAL LOCATION</span>
+                  <span class="badge badge-info">AI Generated</span>
+                </div>
+                <div class="editable-text" contenteditable="true" id="sec-1-body">
+                  <p style="line-height: 1.7; margin-bottom: 12px;">This Geological Report (GR) presents the comprehensive geological evaluation and mineable reserve estimation for <strong>Jharia Coalfield - Block IX Sector</strong> under Bharat Coking Coal Limited (BCCL). Exploration was carried out through <strong>48 deep boreholes</strong> totaling 14,850 meters of cumulative drilling.</p>
+                  <p style="line-height: 1.7;">The block covers an area of <strong>14.2 sq km</strong> situated between Latitudes 23°45'00"N to 23°48'30"N and Longitudes 86°20'00"E to 86°24'15"E. The terrain is flat to gently undulating with an average surface elevation of 210 meters above mean sea level.</p>
+                </div>
+              </div>
+
+              <!-- Section 2 -->
+              <div class="report-section" id="sec-2">
+                <div class="report-section-title">
+                  <span>2. REGIONAL & LOCAL GEOLOGICAL STRATIGRAPHY</span>
+                  <span class="badge badge-info">AI Generated</span>
+                </div>
+                <div class="editable-text" contenteditable="true" id="sec-2-body">
+                  <p style="line-height: 1.7; margin-bottom: 12px;">The exploration area forms part of the standard <strong>Barakar Formation</strong> of Lower Gondwana age. Five major coal seam groups have been delineated in ascending geological order: Seam-I, Seam-II, Seam-III (Combined), Seam-V/VI, and Seam-IX.</p>
+                  
+                  <div style="overflow-x: auto; margin: 16px 0;">
+                    <table class="table" style="font-size: 0.82rem;">
+                      <thead>
+                        <tr>
+                          <th>Seam Name</th>
+                          <th>Depth Range (m)</th>
+                          <th>Avg Thickness (m)</th>
+                          <th>Parting Lithology</th>
+                          <th>Coking Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Seam-IX (Top)</td><td>18.2 – 24.8</td><td>6.6 m</td><td>Coarse Sandstone (12m)</td><td><span class="badge badge-success">Prime Coking</span></td></tr>
+                        <tr><td>Seam-V/VI</td><td>31.0 – 36.5</td><td>5.5 m</td><td>Carbonaceous Shale (6m)</td><td><span class="badge badge-warning">Medium Coking</span></td></tr>
+                        <tr><td>Seam-III (Bottom)</td><td>42.1 – 48.4</td><td>6.3 m</td><td>Basal Conglomerate</td><td><span class="badge badge-success">Prime Coking</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 3 -->
+              <div class="report-section" id="sec-3">
+                <div class="report-section-title">
+                  <span>3. SEAM QUALITY & CHEMICAL PROXIMATE ASSAYS</span>
+                  <span class="badge badge-info">AI Generated</span>
+                </div>
+                <div class="editable-text" contenteditable="true" id="sec-3-body">
+                  <p style="line-height: 1.7; margin-bottom: 12px;">Borehole core samples were subjected to proximate analysis, gross calorific value (GCV) determination, and coking index testing at CMPDI Central Laboratory, Dhanbad. Statistical averages demonstrate high calorific values suited for steel-grade metallurgical usage.</p>
+                  <p style="line-height: 1.7;">Average GCV across Prime Coking Seam-IX is <strong>6,420 kcal/kg</strong> with an average Ash Content of <strong>18.4%</strong> and Volatile Matter of <strong>26.2%</strong>.</p>
+                </div>
+              </div>
+
+              <!-- Section 4 -->
+              <div class="report-section" id="sec-4">
+                <div class="report-section-title">
+                  <span>4. UNFC RESOURCE & RESERVE CLASSIFICATION</span>
+                  <span class="badge badge-success">UNFC 111 Validated</span>
+                </div>
+                <div class="editable-text" contenteditable="true" id="sec-4-body">
+                  <p style="line-height: 1.7; margin-bottom: 12px;">In accordance with Ministry of Coal standards and UNFC guidelines, coal resources within Block IX have been classified based on borehole grid density (borehole spacing &lt; 400m for Proved 111 category):</p>
+
+                  <div style="overflow-x: auto; margin: 16px 0;">
+                    <table class="table" style="font-size: 0.85rem; font-family: var(--font-mono);">
+                      <thead>
+                        <tr>
+                          <th>UNFC Code</th>
+                          <th>Resource Category</th>
+                          <th>Seam IX (MT)</th>
+                          <th>Seam V/VI (MT)</th>
+                          <th>Total Block Tonnage (MT)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>111</td><td>Proved Reserves</td><td>42.8 MT</td><td>38.4 MT</td><td><strong>81.2 MT</strong></td></tr>
+                        <tr><td>122</td><td>Indicated Reserves</td><td>12.4 MT</td><td>14.1 MT</td><td><strong>26.5 MT</strong></td></tr>
+                        <tr><td>333</td><td>Inferred Resources</td><td>4.2 MT</td><td>5.1 MT</td><td><strong>9.3 MT</strong></td></tr>
+                        <tr style="background: rgba(212,168,67,0.1);"><td colspan="2"><strong>Grand Total Block Resources</strong></td><td><strong>59.4 MT</strong></td><td><strong>57.6 MT</strong></td><td><strong style="color: var(--color-gold-light); font-size: 1rem;">117.0 MT</strong></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 5 -->
+              <div class="report-section" id="sec-5">
+                <div class="report-section-title">
+                  <span>5. STATUTORY COMPLIANCE & ENVIRONMENTAL AUDIT</span>
+                  <span class="badge badge-success">Pass (94%)</span>
+                </div>
+                <div class="editable-text" contenteditable="true" id="sec-5-body">
+                  <p style="line-height: 1.7;">The mine plan draft adheres to <strong>MoEFCC Environmental Clearance (EC)</strong> norms, <strong>DGMS Mine Safety Standards</strong>, and <strong>Ministry of Coal Statutory Guidelines (2025 Revision)</strong>. Hydrogeological baseline testing indicates no disturbance to regional aquifers.</p>
+                </div>
+              </div>
+
+              <!-- Signatures Footer -->
+              <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 0.8rem; color: var(--text-tertiary);">Prepared By:</div>
+                  <div style="font-weight: 700; color: var(--color-gold-light); margin-top: 4px;">Dr. Rajesh Kumar</div>
+                  <div style="font-size: 0.78rem; color: var(--text-secondary);">Senior Geologist, CMPDI RI-II</div>
+                </div>
+                <div style="text-align: right;">
+                  <div class="badge badge-success" style="font-size: 0.85rem;">Approved by Chief Geologist</div>
+                  <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px;">CMPDI HQ • Ranchi</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="govt-footer-mount"></div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/reports.js"></script>
+</body>
+</html>

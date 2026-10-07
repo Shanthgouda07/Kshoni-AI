@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" width="160" height="80">
+  <!-- Swachh Bharat Mission Spectacles Logo -->
+  <defs>
+    <linearGradient id="sbGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF9933"/>
+      <stop offset="50%" stop-color="#000080"/>
+      <stop offset="100%" stop-color="#138808"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Spectacle Circle -->
+  <circle cx="48" cy="38" r="26" fill="none" stroke="#0B2545" stroke-width="4.5"/>
+  <circle cx="48" cy="38" r="23" fill="#FFFFFF"/>
+  <text x="48" y="44" font-family="'Noto Sans Devanagari', sans-serif" font-size="14" font-weight="800" text-anchor="middle" fill="#0B2545">
+    स्वच्छ
+  </text>
+
+  <!-- Bridge between spectacles -->
+  <path d="M74 38 Q80 30 86 38" fill="none" stroke="#0B2545" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Right Spectacle Circle -->
+  <circle cx="112" cy="38" r="26" fill="none" stroke="#0B2545" stroke-width="4.5"/>
+  <circle cx="112" cy="38" r="23" fill="#FFFFFF"/>
+  <text x="112" y="44" font-family="'Noto Sans Devanagari', sans-serif" font-size="14" font-weight="800" text-anchor="middle" fill="#0B2545">
+    भारत
+  </text>
+
+  <!-- Side spectacle arms -->
+  <path d="M22 36 L10 32" stroke="#0B2545" stroke-width="4" stroke-linecap="round"/>
+  <path d="M138 36 L150 32" stroke="#0B2545" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Tagline below -->
+  <text x="80" y="74" font-family="'Noto Sans Devanagari', sans-serif" font-size="9" font-weight="700" text-anchor="middle" fill="#E67E22">
+    एक कदम स्वच्छता की ओर
+  </text>
+</svg>

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kshoni AI National Dashboard — Real-time geological reserve monitoring across all CIL subsidiaries.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Dashboard | Kshoni AI</title>
+  <!-- FIX: Added favicon -->
+  <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+  
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  
+  <!-- Chart.js CDN with SRI integrity hash for security (FIX: was missing integrity hash) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"
+    integrity="sha256-oRA9gnrzBDsB/HiUXMpNF2KgMmkV5HLdGNOlqHNuKM="
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Official Government Top Header Mount -->
+  <div id="govt-top-header-mount"></div>
+  
+  <div class="app-layout">
+    <!-- Sidebar (injected by JS) -->
+    <!-- FIX: Standardized to sidebar-mount (was sidebar-container, mismatching all other pages) -->
+    <div id="sidebar-mount"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header (injected by JS) -->
+      <div id="header-container"></div>
+
+      <!-- Page Body -->
+      <div class="page-body">
+        
+        <!-- Top Stats Row -->
+        <div class="stats-row animate-fade-in-up">
+          <div class="stat-card gold">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Total Reserves</span>
+              <div class="stat-card-icon">⛏️</div>
+            </div>
+            <div class="stat-card-value" id="total-reserves">0</div>
+            <div class="stat-card-change positive">↑ 2.3% from FY25</div>
+          </div>
+          
+          <div class="stat-card emerald">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Proved (111)</span>
+              <div class="stat-card-icon">✓</div>
+            </div>
+            <div class="stat-card-value" id="proved-reserves">0</div>
+            <div class="stat-card-change positive">↑ 4.1% classified</div>
+          </div>
+          
+          <div class="stat-card blue">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Active Mines</span>
+              <div class="stat-card-icon">🏭</div>
+            </div>
+            <div class="stat-card-value" id="active-mines">0</div>
+            <div class="stat-card-change positive">↑ 5 new this year</div>
+          </div>
+          
+          <div class="stat-card purple">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Annual Production</span>
+              <div class="stat-card-icon">📦</div>
+            </div>
+            <div class="stat-card-value" id="annual-production">0</div>
+            <div class="stat-card-change positive">↑ 8.2% YoY</div>
+          </div>
+          
+          <div class="stat-card orange">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Boreholes Digitized</span>
+              <div class="stat-card-icon">📊</div>
+            </div>
+            <div class="stat-card-value" id="boreholes-digitized">0</div>
+            <div class="stat-card-change positive">↑ 1,240 this quarter</div>
+          </div>
+          
+          <div class="stat-card red">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Compliance Score</span>
+              <div class="stat-card-icon">✅</div>
+            </div>
+            <div class="stat-card-value" id="compliance-score">0</div>
+            <div class="stat-card-change positive">↑ 3pts improvement</div>
+          </div>
+        </div>
+
+        <!-- Row 2: India Map + Production Chart -->
+        <div class="dashboard-grid animate-fade-in-up stagger-2">
+          <!-- Production Trend Chart -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Production vs Target (FY 2025-26)</h3>
+                <p class="card-subtitle">Monthly coal production across all subsidiaries (MT)</p>
+              </div>
+              <div class="flex gap-2">
+                <button class="btn btn-ghost btn-sm active" id="chart-monthly">Monthly</button>
+                <button class="btn btn-ghost btn-sm" id="chart-quarterly">Quarterly</button>
+              </div>
+            </div>
+            <div class="chart-container tall">
+              <canvas id="productionChart"></canvas>
+            </div>
+          </div>
+          
+          <!-- India Map -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Subsidiary Locations</h3>
+                <p class="card-subtitle">CIL's 8 subsidiaries across India</p>
+              </div>
+              <span class="badge badge-emerald"><span class="status-dot online"></span> All Active</span>
+            </div>
+            <div class="india-map-container" id="india-map"></div>
+          </div>
+        </div>
+
+        <!-- Row 3: Reserve Distribution + UNFC Classification + Quick Actions -->
+        <div class="dashboard-grid-3 animate-fade-in-up stagger-3">
+          <!-- UNFC Classification Donut -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">UNFC Classification</h3>
+                <p class="card-subtitle">Resource categorization</p>
+              </div>
+            </div>
+            <div class="chart-container" style="height:220px;">
+              <canvas id="unfcChart"></canvas>
+            </div>
+            <div class="unfc-legend">
+              <div class="unfc-legend-item">
+                <div class="unfc-dot" style="background: var(--color-emerald)"></div>
+                Proved (111)
+              </div>
+              <div class="unfc-legend-item">
+                <div class="unfc-dot" style="background: var(--color-blue)"></div>
+                Indicated (222)
+              </div>
+              <div class="unfc-legend-item">
+                <div class="unfc-dot" style="background: var(--color-orange)"></div>
+                Inferred (333)
+              </div>
+            </div>
+          </div>
+
+          <!-- Reserve by Subsidiary Bar Chart -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Reserves by Subsidiary</h3>
+                <p class="card-subtitle">Total reserves (MT) per company</p>
+              </div>
+            </div>
+            <div class="chart-container" style="height: 280px;">
+              <canvas id="subsidiaryReserveChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Quick Actions + Pipeline -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Quick Actions</h3>
+            </div>
+            <div class="quick-actions">
+              <a href="upload.html" class="quick-action-btn" id="qa-upload">
+                <span class="quick-action-icon">📤</span>
+                <span class="quick-action-label">Upload Data</span>
+              </a>
+              <a href="dyuti.html" class="quick-action-btn" id="qa-ask">
+                <span class="quick-action-icon">🌑</span>
+                <span class="quick-action-label">Dyuti AI</span>
+              </a>
+              <a href="reports.html" class="quick-action-btn" id="qa-report">
+                <span class="quick-action-icon">📄</span>
+                <span class="quick-action-label">Generate Report</span>
+              </a>
+              <a href="visualization.html" class="quick-action-btn" id="qa-viz">
+                <span class="quick-action-icon">🗺️</span>
+                <span class="quick-action-label">3D View</span>
+              </a>
+              <a href="compliance.html" class="quick-action-btn" id="qa-compliance">
+                <span class="quick-action-icon">✅</span>
+                <span class="quick-action-label">Compliance</span>
+              </a>
+              <a href="#" class="quick-action-btn" id="qa-export">
+                <span class="quick-action-icon">📥</span>
+                <span class="quick-action-label">Export Data</span>
+              </a>
+              <a href="javascript:void(0)" onclick="open4KGalleryModal()" class="quick-action-btn" id="qa-4k-gallery">
+                <span class="quick-action-icon">📸</span>
+                <span class="quick-action-label">4K Imagery</span>
+              </a>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <h4 class="card-title" style="margin-bottom: var(--space-3);">Pipeline Status</h4>
+            <div class="pipeline-status">
+              <div class="pipeline-item">
+                <span class="status-dot online"></span>
+                <span class="pipeline-item-name">OCR Ingestion Engine</span>
+                <span class="pipeline-item-status" style="color: var(--color-emerald);">Healthy</span>
+              </div>
+              <div class="pipeline-item">
+                <span class="status-dot online"></span>
+                <span class="pipeline-item-name">Knowledge Graph Sync</span>
+                <span class="pipeline-item-status" style="color: var(--color-emerald);">Synced</span>
+              </div>
+              <div class="pipeline-item">
+                <span class="status-dot pending"></span>
+                <span class="pipeline-item-name">ML Model Retraining</span>
+                <span class="pipeline-item-status" style="color: var(--color-orange);">In Progress</span>
+              </div>
+              <div class="pipeline-item">
+                <span class="status-dot online"></span>
+                <span class="pipeline-item-name">Report Gen Service</span>
+                <span class="pipeline-item-status" style="color: var(--color-emerald);">Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: Subsidiary Cards -->
+        <div class="card animate-fade-in-up stagger-4" style="margin-bottom: var(--space-6);">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">All Subsidiaries Overview</h3>
+              <p class="card-subtitle">Click on any subsidiary for detailed analysis</p>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn btn-secondary btn-sm">📊 Export to Excel</button>
+              <button class="btn btn-primary btn-sm">⬇ Download Report</button>
+            </div>
+          </div>
+
+          <div class="subsidiary-grid" id="subsidiary-grid"></div>
+        </div>
+
+        <!-- Row 5: Activity + Mine Block Table -->
+        <div class="dashboard-grid animate-fade-in-up stagger-5">
+          <!-- Mine Blocks Table -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Active Mine Blocks</h3>
+                <p class="card-subtitle">12 blocks across all subsidiaries</p>
+              </div>
+              <button class="btn btn-ghost btn-sm">View All →</button>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="data-table" id="mine-blocks-table">
+                <thead>
+                  <tr>
+                    <th>Block ID</th>
+                    <th>Name</th>
+                    <th>Subsidiary</th>
+                    <th>Coalfield</th>
+                    <th>Area (km²)</th>
+                    <th>Seams</th>
+                    <th>Boreholes</th>
+                    <th>Reserve (MT)</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="mine-blocks-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Recent Activity</h3>
+                <p class="card-subtitle">Across all subsidiaries</p>
+              </div>
+            </div>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-icon" style="background: rgba(16,185,129,0.12);">📤</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>32 borehole logs</strong> digitized from BCCL Jharia field office</div>
+                  <div class="activity-time">2 hours ago • Auto-OCR Pipeline</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background: rgba(59,130,246,0.12);">📄</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>GR Draft for Talcher Block-III</strong> generated — pending review</div>
+                  <div class="activity-time">4 hours ago • GenAI Report Engine</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background: rgba(245,158,11,0.12);">⚠️</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Compliance flag:</strong> 2 missing fields in NCL Singrauli GSR</div>
+                  <div class="activity-time">6 hours ago • Compliance Auditor</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background: rgba(139,92,246,0.12);">🔄</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>UNFC reclassification</strong> completed for CCL Karanpura blocks</div>
+                  <div class="activity-time">Yesterday • ML Classification Engine</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background: rgba(212,168,67,0.12);">🗺️</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>3D model updated</strong> for SECL Korba East with new boreholes</div>
+                  <div class="activity-time">Yesterday • Geo-Viz Engine</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background: rgba(239,68,68,0.12);">🚨</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>High risk alert:</strong> Water ingress probability increased at Jharia Block-A</div>
+                  <div class="activity-time">2 days ago • Risk Prediction Module</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background: rgba(6,182,212,0.12);">✅</div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>WCL Wardha Valley GR</strong> approved by CMPDI review board</div>
+                  <div class="activity-time">3 days ago • Workflow Engine</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      </div><!-- /page-body -->
+    </div><!-- /main-content -->
+  </div><!-- /app-layout -->
+
+  <!-- Official Government Footer Mount -->
+  <div id="govt-footer-mount"></div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/data/boreholes.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Build sidebar & header
+      // FIX: ID standardized from sidebar-container to sidebar-mount
+      document.getElementById('sidebar-mount').innerHTML = App.buildSidebar('dashboard');
+      document.getElementById('header-container').innerHTML = App.buildPageHeader(
+        'National Dashboard',
+        'Real-time geological intelligence across all CIL subsidiaries',
+        '<span class="badge badge-emerald" style="margin-right: 8px;"><span class="status-dot online"></span> Live</span>' +
+        '<span class="badge badge-blue">FY 2025-26</span>'
+      );
+
+      // Animate stat counters
+      setTimeout(() => {
+        App.animateCounter(document.getElementById('total-reserves'), CIL_STATS.totalReserve_MT, 2000, ' MT');
+        App.animateCounter(document.getElementById('proved-reserves'), CIL_STATS.provedReserve_MT, 2200, ' MT');
+        App.animateCounter(document.getElementById('active-mines'), CIL_STATS.activeMines, 1500);
+        App.animateCounter(document.getElementById('annual-production'), Math.round(CIL_STATS.annualProduction_MT), 1800, ' MT');
+        App.animateCounter(document.getElementById('boreholes-digitized'), 14520, 2500);
+        App.animateCounter(document.getElementById('compliance-score'), CIL_STATS.avgComplianceScore, 2000, '%');
+      }, 300);
+
+      // Render India Map
+      const mapEl = document.getElementById('india-map');
+      if (mapEl) mapEl.innerHTML = App.getIndiaMapSVG();
+
+      // Render Subsidiary Cards (if element exists)
+      renderSubsidiaryCards();
+
+      // Render Mine Blocks Table (if element exists)
+      renderMineBlocksTable();
+
+      // Initialize Charts
+      initProductionChart();
+      initUNFCChart();
+      initSubsidiaryReserveChart();
+
+      App.setupMobileMenu();
+    });
+
+    // Project Display Interactive Filtering
+    function filterProjects(category, btn) {
+      document.querySelectorAll('.project-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const cards = document.querySelectorAll('.project-card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const cats = card.getAttribute('data-category') || '';
+        if (category === 'all' || cats.includes(category)) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      App.showToast(`Displaying ${visibleCount} filtered mining projects`, 'info');
+    }
+
+    // Project Details Inspector Modal/Toast
+    function openProjectDetails(id) {
+      const projectMeta = [
+        { title: "Gevra-Kusmunda Automated Coal Handling & Crushing Complex", sub: "SECL • Chhattisgarh", cap: "70 MTPA", tech: "High-Capacity In-Pit Crushing & Overland Belt" },
+        { title: "Talcher Deep Valley Opencast Mine & 3D Strata Project", sub: "MCL • Odisha", cap: "1,250 MT Reserve", tech: "Sub-bench strata mapping & 0.98 m³/T SR" },
+        { title: "Singrauli Heavy Hydraulic Excavator & Super-Haulage Fleet", sub: "NCL • Madhya Pradesh", cap: "142.2 MT Annual", tech: "42m³ Rope Shovels & 240T Rear Dumpers" },
+        { title: "Karanpura Highwall Geotechnical & Slope Stability Radar", sub: "CCL • Jharkhand", cap: "0.2mm InSAR Precision", tech: "Continuous InSAR ground deformation radar" },
+        { title: "Madhuban Coking Coal Washery & Deshaling Complex", sub: "BCCL • Jharkhand", cap: "5.0 MTPA Clean Coal", tech: "Dense-media cyclones & heavy media bath" },
+        { title: "First-Mile Connectivity (FMC) Silo Loading Network", sub: "CIL Multi-Subsidiary", cap: "35 Silo Terminals", tech: "Automated rapid train loading systems" },
+        { title: "Northern Coalfields Walking Dragline Overburden Stripping", sub: "NCL • Dudhichua / Jayant", cap: "33m³ Bucket Volume", tech: "Super-capacity electric walking draglines" },
+        { title: "National Clean Coal Gasification & Methanol Mission", sub: "CIL & MoC Strategic", cap: "100 MT Target (2030)", tech: "Surface coal gasification into syngas & methanol" }
+      ];
+      const p = projectMeta[id - 1];
+      if (p) {
+        App.showToast(`Project Telemetry #${id}: ${p.title} | ${p.sub} [${p.cap}]`, 'success');
+      }
+    }
+
+    function renderSubsidiaryCards() {
+      const grid = document.getElementById('subsidiary-grid');
+      if (!grid) return;
+      grid.innerHTML = SUBSIDIARIES.map(s => `
+        <div class="subsidiary-card" style="--sub-color: ${s.color};" onclick="App.showToast('Opening ${s.shortName} details...', 'info')">
+          <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:${s.color};border-radius:var(--radius-lg) 0 0 var(--radius-lg);"></div>
+          <div class="subsidiary-card-header">
+            <div>
+              <div class="subsidiary-card-name" style="color:${s.color};">${s.shortName}</div>
+              <div class="subsidiary-card-region">${s.region} • ${s.hq}</div>
+            </div>
+            <div class="compliance-ring" style="color: ${s.complianceScore >= 90 ? 'var(--color-emerald)' : s.complianceScore >= 80 ? 'var(--color-orange)' : 'var(--color-red)'}">
+              ${s.complianceScore}%
+            </div>
+          </div>
+          <div class="subsidiary-card-stats">
+            <div class="subsidiary-stat">
+              <span class="subsidiary-stat-value">${s.totalReserve_MT.toLocaleString()}</span>
+              <span class="subsidiary-stat-label">Reserve (MT)</span>
+            </div>
+            <div class="subsidiary-stat">
+              <span class="subsidiary-stat-value">${s.activeMines}/${s.totalMines}</span>
+              <span class="subsidiary-stat-label">Active Mines</span>
+            </div>
+            <div class="subsidiary-stat">
+              <span class="subsidiary-stat-value">${s.annualProduction_MT}</span>
+              <span class="subsidiary-stat-label">Production (MT)</span>
+            </div>
+            <div class="subsidiary-stat">
+              <span class="subsidiary-stat-value">${s.mineLife_years}y</span>
+              <span class="subsidiary-stat-label">Mine Life</span>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-3);">
+            <div class="progress-bar">
+              <div class="progress-bar-fill gold" style="width: ${(s.provedReserve_MT / s.totalReserve_MT * 100).toFixed(0)}%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:4px;">
+              <span style="font-size:10px; color:var(--color-text-tertiary);">Proved: ${(s.provedReserve_MT / s.totalReserve_MT * 100).toFixed(0)}%</span>
+              <span style="font-size:10px; color:var(--color-text-tertiary);">${s.provedReserve_MT.toLocaleString()} MT</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderMineBlocksTable() {
+      const tbody = document.getElementById('mine-blocks-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = MINE_BLOCKS.map(b => {
+        const sub = SUBSIDIARIES.find(s => s.id === b.subsidiary);
+        return `
+          <tr>
+            <td class="mono">${b.id}</td>
+            <td><strong>${b.name}</strong></td>
+            <td><span class="badge" style="background: ${sub ? sub.color + '22' : ''}; color: ${sub ? sub.color : ''}">${b.subsidiary}</span></td>
+            <td>${b.coalfield}</td>
+            <td class="mono">${b.area_sqkm}</td>
+            <td class="mono">${b.seams}</td>
+            <td class="mono">${b.boreholes}</td>
+            <td class="mono" style="font-weight:600;">${b.reserve_MT}</td>
+            <td><span class="badge ${b.status === 'Active' ? 'badge-emerald' : 'badge-orange'}">${b.status}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function initProductionChart() {
+      const ctx = document.getElementById('productionChart');
+      if (!ctx || typeof Chart === 'undefined') return;
+      
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: MONTHLY_PRODUCTION.map(m => m.month),
+          datasets: [
+            {
+              label: 'Actual Production (MT)',
+              data: MONTHLY_PRODUCTION.map(m => m.total),
+              borderColor: '#d4a843',
+              backgroundColor: 'rgba(212, 168, 67, 0.1)',
+              fill: true,
+              tension: 0.4,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#d4a843',
+              pointBorderColor: '#0a1628',
+              pointBorderWidth: 2,
+              pointRadius: 4,
+              pointHoverRadius: 7
+            },
+            {
+              label: 'Target (MT)',
+              data: MONTHLY_PRODUCTION.map(m => m.target),
+              borderColor: 'rgba(148, 163, 184, 0.4)',
+              borderDash: [6, 4],
+              fill: false,
+              tension: 0.4,
+              borderWidth: 1.5,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: '#94a3b8',
+                font: { family: 'Inter', size: 11 },
+                usePointStyle: true,
+                pointStyle: 'circle',
+                padding: 20
+              }
+            },
+            tooltip: {
+              backgroundColor: '#0f1f38',
+              titleColor: '#e8edf5',
+              bodyColor: '#94a3b8',
+              borderColor: 'rgba(212,168,67,0.2)',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + ' MT';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(148,163,184,0.06)' },
+              ticks: { color: '#64748b', font: { family: 'Inter', size: 10 } }
+            },
+            y: {
+              grid: { color: 'rgba(148,163,184,0.06)' },
+              ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 }, callback: v => v + ' MT' },
+              beginAtZero: false,
+              min: 35
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          }
+        }
+      });
+    }
+
+    function initUNFCChart() {
+      const ctx = document.getElementById('unfcChart');
+      if (!ctx || typeof Chart === 'undefined') return;
+      
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Proved (111)', 'Indicated (222)', 'Inferred (333)'],
+          datasets: [{
+            data: [UNFC_CLASSIFICATION.G1.tonnage, UNFC_CLASSIFICATION.G2.tonnage, UNFC_CLASSIFICATION.G3.tonnage],
+            backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'],
+            borderColor: '#0a1628',
+            borderWidth: 3,
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f1f38',
+              titleColor: '#e8edf5',
+              bodyColor: '#94a3b8',
+              borderColor: 'rgba(212,168,67,0.2)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                label: function(context) {
+                  return context.label + ': ' + context.parsed.toLocaleString() + ' MT';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function initSubsidiaryReserveChart() {
+      const ctx = document.getElementById('subsidiaryReserveChart');
+      if (!ctx || typeof Chart === 'undefined') return;
+      
+      const sorted = [...SUBSIDIARIES].sort((a, b) => b.totalReserve_MT - a.totalReserve_MT);
+      
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: sorted.map(s => s.shortName),
+          datasets: [
+            {
+              label: 'Proved',
+              data: sorted.map(s => s.provedReserve_MT),
+              backgroundColor: '#10b981',
+              borderRadius: 3
+            },
+            {
+              label: 'Indicated',
+              data: sorted.map(s => s.indicatedReserve_MT),
+              backgroundColor: '#3b82f6',
+              borderRadius: 3
+            },
+            {
+              label: 'Inferred',
+              data: sorted.map(s => s.inferredReserve_MT),
+              backgroundColor: '#f59e0b',
+              borderRadius: 3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: '#94a3b8',
+                font: { family: 'Inter', size: 10 },
+                usePointStyle: true,
+                pointStyle: 'rect',
+                padding: 16
+              }
+            },
+            tooltip: {
+              backgroundColor: '#0f1f38',
+              titleColor: '#e8edf5',
+              bodyColor: '#94a3b8',
+              borderColor: 'rgba(212,168,67,0.2)',
+              borderWidth: 1,
+              padding: 12
+            }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              grid: { display: false },
+              ticks: { color: '#64748b', font: { family: 'Inter', size: 10 } }
+            },
+            y: {
+              stacked: true,
+              grid: { color: 'rgba(148,163,184,0.06)' },
+              ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 }, callback: v => (v/1000).toFixed(0) + 'K MT' }
+            }
+          }
+        }
+      });
+    }
+
+    // Interactive 4K Field Imagery Modal
+    function open4KGalleryModal() {
+      const existing = document.getElementById('modal-4k-gallery');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'modal-4k-gallery';
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+      
+      modal.innerHTML = `
+        <div style="background:#0F172A;border:1px solid rgba(212,168,67,0.4);border-radius:12px;width:100%;max-width:1050px;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid #1E293B;background:#0A1322;">
+            <div>
+              <div style="font-size:0.75rem;font-weight:700;color:#D4A843;text-transform:uppercase;letter-spacing:1px;">Ministry of Coal • Field Telemetry</div>
+              <h3 style="margin:2px 0 0 0;font-size:1.25rem;font-weight:800;color:#FFFFFF;display:flex;align-items:center;gap:8px;">
+                <span>📸</span> 4K Ultra-HD Field Photogrammetry & Heavy Machinery
+              </h3>
+            </div>
+            <button onclick="document.getElementById('modal-4k-gallery').remove()" style="background:#1E293B;border:1px solid #334155;color:#E2E8F0;font-size:18px;width:36px;height:36px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+          </div>
+          
+          <div style="padding:24px;display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;">
+            <!-- Card 1 -->
+            <div style="background:#1E293B;border:1px solid #334155;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="assets/images/project_shovel_illuminated.jpg" alt="Electric Rope Shovel" style="width:100%;height:100%;object-fit:cover;" />
+                <span style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);color:#10B981;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;border:1px solid #10B981;">4K UHD (3840×2399)</span>
+              </div>
+              <div style="padding:14px;flex:1;display:flex;flex-direction:column;">
+                <h4 style="margin:0 0 4px 0;font-size:14px;color:#FFFFFF;font-weight:700;">42m³ Super Shovel #45 at Night</h4>
+                <p style="margin:0 0 12px 0;font-size:12px;color:#94A3B8;line-height:1.4;flex:1;">Ultra-class electric rope shovel illuminated with high-output LED floodlight array operating in opencast coal pit.</p>
+                <a href="assets/images/project_shovel_illuminated.jpg" target="_blank" style="display:block;text-align:center;background:#0C2340;border:1px solid #D4A843;color:#D4A843;padding:8px 12px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">🔍 Open Full 4K (2.79 MB)</a>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div style="background:#1E293B;border:1px solid #334155;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="assets/images/project_bucketwheel_spreader.jpg" alt="Bucket Wheel Excavator" style="width:100%;height:100%;object-fit:cover;" />
+                <span style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);color:#10B981;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;border:1px solid #10B981;">4K UHD (3840×2562)</span>
+              </div>
+              <div style="padding:14px;flex:1;display:flex;flex-direction:column;">
+                <h4 style="margin:0 0 4px 0;font-size:14px;color:#FFFFFF;font-weight:700;">Continuous Bucket-Wheel & Spreader</h4>
+                <p style="margin:0 0 12px 0;font-size:12px;color:#94A3B8;line-height:1.4;flex:1;">Automated multi-bench continuous mining system feeding cross-pit conveyor with automated internal backfilling.</p>
+                <a href="assets/images/project_bucketwheel_spreader.jpg" target="_blank" style="display:block;text-align:center;background:#0C2340;border:1px solid #D4A843;color:#D4A843;padding:8px 12px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">🔍 Open Full 4K (2.05 MB)</a>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div style="background:#1E293B;border:1px solid #334155;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="assets/images/project_deep_spiral_pit.jpg" alt="Deep Spiral Bench Quarry" style="width:100%;height:100%;object-fit:cover;" />
+                <span style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);color:#10B981;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;border:1px solid #10B981;">4K UHD (3849×2160)</span>
+              </div>
+              <div style="padding:14px;flex:1;display:flex;flex-direction:column;">
+                <h4 style="margin:0 0 4px 0;font-size:14px;color:#FFFFFF;font-weight:700;">Deep Terraced Spiral Quarry</h4>
+                <p style="margin:0 0 12px 0;font-size:12px;color:#94A3B8;line-height:1.4;flex:1;">Multi-bench strata with 200m depth, haulage roads, and pit-rim processing plant and ventilation shaft complex.</p>
+                <a href="assets/images/project_deep_spiral_pit.jpg" target="_blank" style="display:block;text-align:center;background:#0C2340;border:1px solid #D4A843;color:#D4A843;padding:8px 12px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">🔍 Open Full 4K (1.92 MB)</a>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div style="background:#1E293B;border:1px solid #334155;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="assets/images/project_tall_bucketwheel.jpg" alt="High-Reach Bagger" style="width:100%;height:100%;object-fit:cover;" />
+                <span style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);color:#10B981;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;border:1px solid #10B981;">4K UHD (2560×3840)</span>
+              </div>
+              <div style="padding:14px;flex:1;display:flex;flex-direction:column;">
+                <h4 style="margin:0 0 4px 0;font-size:14px;color:#FFFFFF;font-weight:700;">High-Reach Bagger Continuous Miner</h4>
+                <p style="margin:0 0 12px 0;font-size:12px;color:#94A3B8;line-height:1.4;flex:1;">Continuous highwall bench cutting unit equipped with massive rotating cutting wheel and support crawler bulldozer.</p>
+                <a href="assets/images/project_tall_bucketwheel.jpg" target="_blank" style="display:block;text-align:center;background:#0C2340;border:1px solid #D4A843;color:#D4A843;padding:8px 12px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">🔍 Open Full 4K (2.60 MB)</a>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div style="background:#1E293B;border:1px solid #334155;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="assets/images/project_amphitheater_mine.jpg" alt="Amphitheater Mine Basin" style="width:100%;height:100%;object-fit:cover;" />
+                <span style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);color:#10B981;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;border:1px solid #10B981;">4K UHD (3840×2560)</span>
+              </div>
+              <div style="padding:14px;flex:1;display:flex;flex-direction:column;">
+                <h4 style="margin:0 0 4px 0;font-size:14px;color:#FFFFFF;font-weight:700;">Amphitheater Terraced Basin Pit</h4>
+                <p style="margin:0 0 12px 0;font-size:12px;color:#94A3B8;line-height:1.4;flex:1;">Grand spiraling bench opencast formation surrounded by preserved environmental green canopy forest.</p>
+                <a href="assets/images/project_amphitheater_mine.jpg" target="_blank" style="display:block;text-align:center;background:#0C2340;border:1px solid #D4A843;color:#D4A843;padding:8px 12px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">🔍 Open Full 4K (2.59 MB)</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+  </script>
+</body>
+</html>

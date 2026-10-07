@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700">
+  <defs>
+    <linearGradient id="skyNcl2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="50%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#skyNcl2)"/>
+
+  <!-- Terraced Bench Terraces of Singrauli Open Pit -->
+  <polygon points="0,250 1200,320 1200,700 0,700" fill="#78350f"/>
+  <polygon points="0,340 1200,390 1200,700 0,700" fill="#451a03"/>
+  <polygon points="0,440 1200,480 1200,700 0,700" fill="#18181b"/>
+
+  <!-- Giant Dragline Shovel Boom (NCL Jayant) -->
+  <g transform="translate(620, 240)">
+    <polygon points="100,240 140,50 200,50 240,240" fill="#09090b" stroke="#38bdf8" stroke-width="2"/>
+    <line x1="170" y1="60" x2="480" y2="-120" stroke="#f59e0b" stroke-width="16" stroke-linecap="round"/>
+    <line x1="170" y1="80" x2="480" y2="-120" stroke="#09090b" stroke-width="8"/>
+    <!-- Bucket Cables -->
+    <line x1="480" y1="-120" x2="480" y2="120" stroke="#18181b" stroke-width="4"/>
+    <polygon points="430,120 510,120 490,190 410,180" fill="#f59e0b" stroke="#09090b" stroke-width="3"/>
+  </g>
+
+  <!-- Title Overlay -->
+  <rect x="40" y="40" width="580" height="110" rx="8" fill="rgba(9, 9, 11, 0.88)" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="60" y="75" fill="#38bdf8" font-family="sans-serif" font-weight="bold" font-size="20">NCL Jayant &amp; Nigahi Dragline Complex</text>
+  <text x="60" y="105" fill="#e4e4e7" font-family="sans-serif" font-size="14">Singrauli Mega Opencast Coalfield (MP &amp; UP)</text>
+  <text x="60" y="130" fill="#f59e0b" font-family="sans-serif" font-weight="600" font-size="13">📸 24x7 Heavy Dragline Excavation on Purewa Seam</text>
+</svg>

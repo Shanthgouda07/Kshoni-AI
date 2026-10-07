@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700">
+  <defs>
+    <linearGradient id="skyEco" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="50%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+
+    <linearGradient id="siloMetal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="30%" stop-color="#64748b"/>
+      <stop offset="70%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#skyEco)"/>
+
+  <!-- Reclaimed Green Eco-Park Hills & Forest Trees -->
+  <path d="M0,450 Q350,380 700,460 Q1050,520 1200,440 L1200,700 L0,700 Z" fill="#15803d"/>
+  <path d="M0,520 Q450,470 900,530 L1200,500 L1200,700 L0,700 Z" fill="#166534"/>
+
+  <!-- Forest Canopy Trees -->
+  <circle cx="150" cy="460" r="40" fill="#14532d"/>
+  <circle cx="220" cy="440" r="50" fill="#166534"/>
+  <circle cx="300" cy="470" r="45" fill="#15803d"/>
+  <circle cx="420" cy="450" r="55" fill="#166534"/>
+
+  <!-- Rapid Rail Loading Silo Tower (Concrete & Steel Structure) -->
+  <g transform="translate(750, 160)">
+    <rect x="0" y="0" width="220" height="380" rx="12" fill="url(#siloMetal)" stroke="#0f172a" stroke-width="3"/>
+    <!-- Silo Hoppers -->
+    <polygon points="0,380 110,470 220,380" fill="#1e293b" stroke="#0f172a" stroke-width="3"/>
+    <!-- Indian Railways Freight Train Wagons under Silo -->
+    <rect x="-40" y="440" width="300" height="65" rx="4" fill="#b45309" stroke="#000" stroke-width="3"/>
+    <text x="50" y="480" font-family="sans-serif" font-weight="bold" font-size="16" fill="#fef08a">INDIAN RAILWAYS COAL BOXN</text>
+    <circle cx="-10" cy="515" r="14" fill="#18181b"/>
+    <circle cx="50" cy="515" r="14" fill="#18181b"/>
+    <circle cx="170" cy="515" r="14" fill="#18181b"/>
+    <circle cx="230" cy="515" r="14" fill="#18181b"/>
+  </g>
+
+  <!-- Long Overhead Pipe Conveyor Bridge (Overland Conveyor) -->
+  <line x1="0" y1="360" x2="750" y2="240" stroke="#f59e0b" stroke-width="32" stroke-linecap="round"/>
+  <line x1="0" y1="360" x2="750" y2="240" stroke="#1e293b" stroke-width="16" stroke-linecap="round"/>
+  <line x1="0" y1="360" x2="750" y2="240" stroke="#ffffff" stroke-width="2" stroke-dasharray="20 10"/>
+
+  <!-- Title Banner Overlay -->
+  <rect x="40" y="40" width="630" height="110" rx="8" fill="rgba(9, 9, 11, 0.88)" stroke="#10b981" stroke-width="1.5"/>
+  <text x="60" y="75" fill="#10b981" font-family="sans-serif" font-weight="bold" font-size="20">First Mile Connectivity (FMC) &amp; Rapid Rail Silo</text>
+  <text x="60" y="105" fill="#e4e4e7" font-family="sans-serif" font-size="14">Automated Closed Overland Conveyor &amp; Reclaimed Eco-Park</text>
+  <text x="60" y="130" fill="#f59e0b" font-family="sans-serif" font-weight="600" font-size="13">📸 85% Reduction in Road Dust • Net-Zero Sustainable Mining</text>
+</svg>

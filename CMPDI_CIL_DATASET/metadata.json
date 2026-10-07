@@ -1,0 +1,85 @@
+{
+  "name": "CMPDI_CIL_DATASET",
+  "authority": "Ministry of Coal & Central Mine Planning & Design Institute (CMPDI)",
+  "structure": {
+    "excel": [
+      "Coal_Statistics.xlsx",
+      "Production_Data.xlsx"
+    ],
+    "pdf": [
+      "Coal_Directory_2024_25.pdf",
+      "Coal_Directory_2023_24.pdf",
+      "Coal_Directory_2022_23.pdf"
+    ],
+    "word": [
+      "Historical_Report.docx"
+    ],
+    "images_scanned": [
+      "Sample_Scanned_Report.pdf"
+    ]
+  },
+  "ministryChapters": [
+    {
+      "chapter": 1,
+      "title": "Overview & National Inventory",
+      "detail": "Total Resources 378.2 BT, Geological Vector Rollup across 8 CIL Subsidiaries"
+    },
+    {
+      "chapter": 2,
+      "title": "Coal Reserves by State and Quality",
+      "detail": "UNFC 111 Proved (178.4 BT), 122 Indicated (94.2 BT), 333 Inferred (42.8 BT)"
+    },
+    {
+      "chapter": 3,
+      "title": "Raw Coal Production by Company & State",
+      "detail": "CIL 781.06 MT, SCCL 69.006 MT, Captive 138.50 MT (Total: 988.566 MT in 2024-25)"
+    },
+    {
+      "chapter": 4,
+      "title": "Sector-wise Despatches & Offtake",
+      "detail": "Thermal Power Utilities (82.4%), Steel Sponge Iron (8.2%), Cement (2.5%), Others (6.9%)"
+    },
+    {
+      "chapter": 5,
+      "title": "Pithead Value of Coal Production",
+      "detail": "Aggregate Pithead Value of Raw Coal Production exceeds ₹1,74,200 Crores"
+    },
+    {
+      "chapter": 6,
+      "title": "Import and Export of Coal & Coke",
+      "detail": "Metallurgical Coking Coal Imports: 58.2 MT; Thermal Non-coking import substitution on track"
+    },
+    {
+      "chapter": 7,
+      "title": "Coal Washeries & Beneficiation Performance",
+      "detail": "12 Operational CIL Washeries with 24 MTPA input capacity (Yield 48.5% washed coking)"
+    },
+    {
+      "chapter": 8,
+      "title": "Captive & Commercial Mining Blocks",
+      "detail": "161 Commercial blocks allocated with 138.5 MT annual contribution in 2024-25"
+    },
+    {
+      "chapter": 9,
+      "title": "Grade-wise Production (G1 to G17)",
+      "detail": "Predominant grades G7 to G13 (58.4%), Steel Grade Prime Coking (4.2%), Intermediate G1-G6 (12.1%)"
+    },
+    {
+      "chapter": 10,
+      "title": "Manpower, Productivity & OMS Statistics",
+      "detail": "Overall OMS (Output per Manshift) in Opencast mines increased to 16.42 Tonnes"
+    },
+    {
+      "chapter": 11,
+      "title": "Lignite Production & Despatches in India",
+      "detail": "NLC India Limited and State entities achieved 48.2 MT Lignite production in Neyveli & Gujarat"
+    }
+  ],
+  "productionSummary2024_25": {
+    "cil_total_MT": 781.06,
+    "sccl_total_MT": 69.006,
+    "captive_commercial_MT": 138.5,
+    "all_india_total_MT": 988.566
+  },
+  "pipeline": "PDF -> OCR / Text Extraction -> AI -> Knowledge Base -> Dyuti Question"
+}

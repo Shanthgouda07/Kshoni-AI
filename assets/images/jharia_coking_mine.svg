@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700">
+  <defs>
+    <!-- Sky Gradient -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="40%" stop-color="#334155"/>
+      <stop offset="75%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Pit Ground Gradient -->
+    <linearGradient id="pitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#451a03"/>
+      <stop offset="25%" stop-color="#78350f"/>
+      <stop offset="50%" stop-color="#18181b"/>
+      <stop offset="75%" stop-color="#09090b"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+
+    <radialGradient id="sunGlow" cx="80%" cy="20%" r="40%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background Sky -->
+  <rect width="1200" height="700" fill="url(#skyGrad)"/>
+  <rect width="1200" height="700" fill="url(#sunGlow)"/>
+
+  <!-- Distant Coalfield Terraces (Jharia Seams) -->
+  <polygon points="0,220 350,200 700,240 1200,210 1200,700 0,700" fill="#3f3f46"/>
+  <polygon points="0,280 400,260 850,300 1200,270 1200,700 0,700" fill="#27272a"/>
+  <polygon points="0,350 480,330 920,380 1200,340 1200,700 0,700" fill="#18181b"/>
+
+  <!-- Main Coal Seam Exposure (Exposed Black Coking Seam IX/X) -->
+  <polygon points="0,420 1200,450 1200,560 0,520" fill="#09090b"/>
+  <line x1="0" y1="435" x2="1200" y2="465" stroke="#27272a" stroke-width="4"/>
+
+  <!-- Heavy Mining Excavator CAT 6060 Shovel Silhouette & Details -->
+  <g transform="translate(680, 360)">
+    <!-- Base Tracks -->
+    <rect x="0" y="70" width="160" height="40" rx="8" fill="#18181b" stroke="#71717a" stroke-width="3"/>
+    <circle cx="25" cy="90" r="14" fill="#3f3f46"/>
+    <circle cx="80" cy="90" r="14" fill="#3f3f46"/>
+    <circle cx="135" cy="90" r="14" fill="#3f3f46"/>
+    <!-- Yellow Machinery Body -->
+    <rect x="20" y="20" width="120" height="55" rx="6" fill="#eab308" stroke="#a16207" stroke-width="2"/>
+    <rect x="30" y="28" width="40" height="25" rx="3" fill="#09090b"/> <!-- Cab Window -->
+    <!-- Boom Arm -->
+    <line x1="120" y1="35" x2="240" y2="-40" stroke="#eab308" stroke-width="18" stroke-linecap="round"/>
+    <line x1="240" y1="-40" x2="290" y2="20" stroke="#ca8a04" stroke-width="14" stroke-linecap="round"/>
+    <!-- Bucket -->
+    <polygon points="270,10 320,10 310,60 260,50" fill="#27272a" stroke="#eab308" stroke-width="2"/>
+  </g>
+
+  <!-- Heavy Haul Dump Truck CAT 797F (Yellow & Dark Dust) -->
+  <g transform="translate(240, 410)">
+    <rect x="0" y="0" width="130" height="50" rx="4" fill="#ca8a04"/>
+    <rect x="15" y="-20" width="45" height="25" rx="3" fill="#09090b"/>
+    <circle cx="30" cy="55" r="22" fill="#18181b" stroke="#52525b" stroke-width="4"/>
+    <circle cx="105" cy="55" r="22" fill="#18181b" stroke="#52525b" stroke-width="4"/>
+  </g>
+
+  <!-- Title Badge Overlay -->
+  <rect x="40" y="40" width="560" height="110" rx="8" fill="rgba(9, 9, 11, 0.88)" stroke="#eab308" stroke-width="1.5"/>
+  <text x="60" y="75" fill="#fef08a" font-family="sans-serif" font-weight="bold" font-size="20">BCCL Jharia Coking Coal Opencast Project</text>
+  <text x="60" y="105" fill="#e4e4e7" font-family="sans-serif" font-size="14">Jharkhand Division • 14.85 Billion Tonnes Proved Reserves</text>
+  <text x="60" y="130" fill="#22c55e" font-family="sans-serif" font-weight="600" font-size="13">📸 Verified Open-Pit Mining &amp; Deep Coking Seam Extraction</text>
+</svg>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kshoni AI — Official Geological & Mining Intelligence Portal for Ministry of Coal, CMPDI, and Coal India Limited (CIL).">
+  <meta name="robots" content="index, follow">
+  <title>Kshoni AI | क्षोणी • Ministry of Coal, Government of India</title>
+  <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+  
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* Government Portal Homepage Specific Styles */
+    .hero-banner-section {
+      background: linear-gradient(135deg, rgba(0, 34, 68, 0.95), rgba(11, 37, 69, 0.9)), url('https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1600&q=80') center/cover;
+      border-bottom: 3px solid var(--color-gold);
+      color: #ffffff;
+      padding: 40px 24px;
+    }
+
+    .hero-banner-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    @media (max-width: 992px) {
+      .hero-banner-inner { grid-template-columns: 1fr; }
+    }
+
+    .hero-stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 650px) {
+      .hero-stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(212, 168, 67, 0.4);
+      border-radius: 6px;
+      padding: 10px 14px;
+      text-align: center;
+    }
+
+    .stat-pill-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--color-gold-light);
+      font-family: var(--font-mono);
+    }
+
+    .stat-pill-lbl {
+      font-size: 0.72rem;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Fast Access Login Card */
+    .portal-login-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-top: 4px solid var(--color-saffron);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      color: var(--color-text-primary);
+    }
+
+    .role-select-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      background: var(--color-bg-tertiary);
+      transition: all 0.2s ease;
+    }
+
+    .role-select-item:hover {
+      border-color: var(--color-gold);
+      background: var(--color-bg-card-hover);
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Official Government Header Mount (Tricolor, Utility Bar, Banner, Navigation, Ticker) -->
+  <div id="govt-top-header-mount"></div>
+
+  <main id="main-content">
+    
+    <!-- Hero Banner with Mission Overview & Quick Telemetry -->
+    <section class="hero-banner-section">
+      <div class="hero-banner-inner">
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(212,168,67,0.2); border:1px solid var(--color-gold); padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; color:var(--color-gold-light); margin-bottom:12px;">
+            <span>🇮🇳</span>
+            <span>भारत सरकार • कोयला मंत्रालय • सीएमपीडीआई का आधिकारिक एआई पोर्टल</span>
+          </div>
+
+          <h1 style="font-size: 2.2rem; font-weight: 800; line-height: 1.2; color: #ffffff; display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            Kshoni AI <img src="assets/images/kshoni_logo.svg" alt="Kshoni AI Emblem" style="height:36px; width:auto; filter: drop-shadow(0 2px 6px rgba(212,168,67,0.5));" /> : National Geological & Mining Intelligence System
+          </h1>
+          <p style="font-size: 1.05rem; color: #cbd5e1; margin-top: 10px; line-height: 1.5; font-family: var(--font-serif);">
+            Addressing the information bottlenecks of the Indian coal sector by transforming paper-based borehole logs and statutory reports into real-time, searchable, AI-verified geological knowledge across all 8 Coal India subsidiaries.
+          </p>
+
+          <div class="hero-stats-row">
+            <div class="stat-pill">
+              <div class="stat-pill-val" id="stat-reserves">378.2 BT</div>
+              <div class="stat-pill-lbl">Total Coal Reserves</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-pill-val" id="stat-mines">318</div>
+              <div class="stat-pill-lbl">Active CIL Mines</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-pill-val" id="stat-boreholes">14,520</div>
+              <div class="stat-pill-lbl">Digitized Boreholes</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-pill-val" id="stat-compliance">92.4%</div>
+              <div class="stat-pill-lbl">Compliance Index</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fast Role Selection & Direct Entrance -->
+        <div>
+          <div class="portal-login-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div>
+                <h3 style="margin:0; font-size:1.1rem; font-weight:800; color:var(--color-text-primary);">
+                  🔐 Portal Access by Role
+                </h3>
+                <p style="margin:2px 0 0 0; font-size:0.75rem; color:var(--color-text-secondary);">
+                  Single Sign-On for Ministry, CMPDI, and CIL Subsidiary Officers
+                </p>
+              </div>
+              <span class="badge badge-govt">Authorized</span>
+            </div>
+
+            <div class="role-select-item" onclick="App.login(1)">
+              <div style="width:36px; height:36px; border-radius:50%; background:rgba(200,149,40,0.2); border:1px solid var(--color-gold); display:flex; align-items:center; justify-content:center; font-size:1.1rem;">⛏️</div>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem; font-weight:700;">Dr. Rajesh Kumar</div>
+                <div style="font-size:0.72rem; color:var(--color-text-secondary);">Chief Geologist • BCCL Jharia Coalfield</div>
+              </div>
+              <span style="font-size:0.8rem; color:var(--color-blue);">Enter →</span>
+            </div>
+
+            <div class="role-select-item" onclick="App.login(2)">
+              <div style="width:36px; height:36px; border-radius:50%; background:rgba(37,99,235,0.2); border:1px solid var(--color-blue); display:flex; align-items:center; justify-content:center; font-size:1.1rem;">📐</div>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem; font-weight:700;">Smt. Priya Sharma</div>
+                <div style="font-size:0.72rem; color:var(--color-text-secondary);">GM (Mine Planning) • CMPDI HQ Ranchi</div>
+              </div>
+              <span style="font-size:0.8rem; color:var(--color-blue);">Enter →</span>
+            </div>
+
+            <div class="role-select-item" onclick="App.login(3)">
+              <div style="width:36px; height:36px; border-radius:50%; background:rgba(16,185,129,0.2); border:1px solid var(--color-emerald); display:flex; align-items:center; justify-content:center; font-size:1.1rem;">🏛️</div>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem; font-weight:700;">Shri Anil Verma</div>
+                <div style="font-size:0.72rem; color:var(--color-text-secondary);">Director (Technical) • Ministry of Coal</div>
+              </div>
+              <span style="font-size:0.8rem; color:var(--color-blue);">Enter →</span>
+            </div>
+
+            <div style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
+              <a href="dashboard.html" class="btn btn-primary w-full" style="text-align:center;">
+                🚀 Proceed to National Dashboard Directly
+              </a>
+              <button onclick="App.openDyutiChatbot(event)" class="btn btn-secondary w-full" style="display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid #D4A843; background:rgba(212,168,67,0.12); color:#F5D77F; font-weight:700; cursor:pointer; padding:10px 14px;">
+                <img src="assets/images/coal_lump.svg" alt="Dyuti Coal Icon" style="width:18px; height:18px;" />
+                <span>💬 Ask Dyuti AI Chatbot (द्युति) ➔</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="portal-container">
+      
+      <!-- Integrated Government Coal Portals -->
+      <h3 style="font-size:0.85rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--color-text-tertiary); margin-bottom:12px;">
+        ⚡ Key Statutory Portals & Services • प्रमुख सेवाएं
+      </h3>
+
+      <div class="quick-services-bar">
+        <a href="dashboard.html" class="service-tile">
+          <div class="service-icon">📊</div>
+          <div class="service-name">National Coal Dashboard</div>
+          <div class="service-sub">Real-time UNFC Reserve Metrics</div>
+        </a>
+
+        <a href="upload.html" class="service-tile">
+          <div class="service-icon">📤</div>
+          <div class="service-name">Neural OCR Ingestion</div>
+          <div class="service-sub">Automated Borehole Digitization</div>
+        </a>
+
+        <a href="dyuti.html" class="service-tile">
+          <div class="service-icon">🌑</div>
+          <div class="service-name">Dyuti AI AI Engine</div>
+          <div class="service-sub">Natural Language Geological Query</div>
+        </a>
+
+        <a href="reports.html" class="service-tile">
+          <div class="service-icon">📄</div>
+          <div class="service-name">Statutory GR Generator</div>
+          <div class="service-sub">Automated Mine Plan Drafting</div>
+        </a>
+
+        <a href="visualization.html" class="service-tile">
+          <div class="service-icon">🗺️</div>
+          <div class="service-name">3D Subsurface Strata</div>
+          <div class="service-sub">Interactive 3D Borehole Modeling</div>
+        </a>
+
+        <a href="compliance.html" class="service-tile">
+          <div class="service-icon">✅</div>
+          <div class="service-name">Compliance Auditor</div>
+          <div class="service-sub">DGMS & MoEFCC Auto-Audit</div>
+        </a>
+      </div>
+
+      <!-- Photographic Showcase / Official Ministry Gallery Carousel -->
+      <div class="card mb-lg" style="padding: 0; overflow: hidden; border-top: 3px solid var(--color-gold);">
+        <div style="padding: 14px 20px; background: var(--color-bg-tertiary); border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">📸</span>
+            <span style="font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-primary);">
+              राष्ट्रीय कोयला क्षेत्र पहल एवं परियोजनाएं • Official Project Showcase
+            </span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary btn-xs" onclick="prevSlide()">❮ Prev</button>
+            <button class="btn btn-secondary btn-xs" onclick="nextSlide()">Next ❯</button>
+          </div>
+        </div>
+
+        <!-- Slider Track -->
+        <div style="position: relative; height: 380px; width: 100%; overflow: hidden;" id="photo-slider">
+          <!-- Slide 1: Electric Rope Shovel #45 at Night / Dusk -->
+          <div class="photo-slide active" style="position: absolute; inset: 0; transition: opacity 0.5s ease; opacity: 1;">
+            <img src="assets/images/project_shovel_illuminated.jpg" alt="Electric Rope Shovel Night Operations" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 24, 51, 0.92) 100%); padding: 30px 24px 20px 24px; color: #ffffff;">
+              <span class="badge badge-gold" style="margin-bottom: 6px;">विशाल इलेक्ट्रिक रोप फावड़ा • 42m³ Heavy Rope Shovel Fleet</span>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 4px 0;">
+                1. 42 घनमीटर इलेक्ट्रिक रोप फावड़ा एवं 240-टन रियर डंपर (Heavy HEMM Electric Rope Shovel)
+              </h2>
+              <p style="font-size: 0.85rem; color: #cbd5e1; max-width: 900px; margin: 0;">
+                एलईडी फ्लडलाइट ऐरे से सुसज्जित 42m³ सुपर-कैपेसिटी उत्खनन फावड़ा। 24×7 निरंतर संचालन द्वारा राष्ट्रीय ताप विद्युत स्टेशनों को निर्बाध कोयला प्रेषण।
+              </p>
+            </div>
+          </div>
+
+          <!-- Slide 2: Continuous Mining Bucket-Wheel Excavator & Spreader -->
+          <div class="photo-slide" style="position: absolute; inset: 0; transition: opacity 0.5s ease; opacity: 0; pointer-events: none;">
+            <img src="assets/images/project_bucketwheel_spreader.jpg" alt="Continuous Bucket-Wheel Excavator & Spreader" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 24, 51, 0.92) 100%); padding: 30px 24px 20px 24px; color: #ffffff;">
+              <span class="badge badge-emerald" style="margin-bottom: 6px;">सतत उत्खनन एवं स्वचालित स्प्रेडर • Continuous Bucket-Wheel Mining</span>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 4px 0;">
+                2. सतत बकेट-व्हील एक्सकेवेटर एवं क्रॉस-पिट स्प्रेडर प्रणाली (Bucket-Wheel & Spreader System)
+              </h2>
+              <p style="font-size: 0.85rem; color: #cbd5e1; max-width: 900px; margin: 0;">
+                व्यापक कोयला बेसिन में प्रति घंटे 12,000 टन ओवरबर्डन व लिग्नाइट/कोयला उत्खनन। उच्च दक्षता और शून्य-उत्सर्जन कन्वेयर आधारित आंतरिक बैकफिलिंग।
+              </p>
+            </div>
+          </div>
+
+          <!-- Slide 3: Deep Spiral Bench Quarry & Processing Complex -->
+          <div class="photo-slide" style="position: absolute; inset: 0; transition: opacity 0.5s ease; opacity: 0; pointer-events: none;">
+            <img src="assets/images/project_deep_spiral_pit.jpg" alt="Deep Terraced Spiral Quarry" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 24, 51, 0.92) 100%); padding: 30px 24px 20px 24px; color: #ffffff;">
+              <span class="badge badge-govt" style="margin-bottom: 6px;">गहन सर्पिलाकार बेंच खदान • Deep Terraced Spiral Pit</span>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 4px 0;">
+                3. गहरी सर्पिलाकार बेंच ओपनकास्ट खदान एवं सतही संयंत्र (Deep Terraced Spiral Quarry & Processing Plant)
+              </h2>
+              <p style="font-size: 0.85rem; color: #cbd5e1; max-width: 900px; margin: 0;">
+                200+ मीटर कार्य गहराई पर बहु-सीम भू-गर्भीय उत्खनन, स्थिर ढलान रैंप और पिट-रिम पर उच्च क्षमता क्रशिंग व वाशरी परिसर।
+              </p>
+            </div>
+          </div>
+
+          <!-- Slide 4: Giant High-Reach Bagger Bucket-Wheel -->
+          <div class="photo-slide" style="position: absolute; inset: 0; transition: opacity 0.5s ease; opacity: 0; pointer-events: none;">
+            <img src="assets/images/project_tall_bucketwheel.jpg" alt="Giant High-Reach Bagger Excavator" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 24, 51, 0.92) 100%); padding: 30px 24px 20px 24px; color: #ffffff;">
+              <span class="badge badge-gold" style="margin-bottom: 6px;">उच्च-ऊंचाई बकेट-व्हील मशीन • High-Reach Multi-Bench Bagger</span>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 4px 0;">
+                4. बहु-सीम हाईवॉल बकेट-व्हील कटिंग मशीन (High-Reach Bagger Surface Miner)
+              </h2>
+              <p style="font-size: 0.85rem; color: #cbd5e1; max-width: 900px; margin: 0;">
+                विशालकाय कटिंग व्हील द्वारा 40 मीटर तक की वर्टिकल बेंच कटाई, बुलडोज़र सहायता व स्वचालित सतत बेल्ट डिस्चार्ज प्रणाली।
+              </p>
+            </div>
+          </div>
+
+          <!-- Slide 5: Amphitheater Terraced Spiral Mine Basin -->
+          <div class="photo-slide" style="position: absolute; inset: 0; transition: opacity 0.5s ease; opacity: 0; pointer-events: none;">
+            <img src="assets/images/project_amphitheater_mine.jpg" alt="Amphitheater Terraced Mine Basin" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 24, 51, 0.92) 100%); padding: 30px 24px 20px 24px; color: #ffffff;">
+              <span class="badge badge-emerald" style="margin-bottom: 6px;">एम्फीथिएटर सर्पिलाकार बेसिन • Terraced Amphitheater Basin</span>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 4px 0;">
+                5. एम्फीथिएटर टेरेस्ड ओपनकास्ट बेसिन एवं हरित परिधि (Terraced Amphitheater Coal Basin)
+              </h2>
+              <p style="font-size: 0.85rem; color: #cbd5e1; max-width: 900px; margin: 0;">
+                प्रकृति-संरेखित हरित परिधि के मध्य सर्पिलाकार बेंच खदान। इनसार उपग्रह राडार द्वारा ढलान स्थिरता एवं जल निकासी प्रबंधन।
+              </p>
+            </div>
+          </div>
+
+          <!-- Slide 6: First Mile Connectivity (FMC) Rail Silos -->
+          <div class="photo-slide" style="position: absolute; inset: 0; transition: opacity 0.5s ease; opacity: 0; pointer-events: none;">
+            <img src="assets/images/online_mine_6.jpg" alt="First Mile Connectivity Rail Silos" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 24, 51, 0.92) 100%); padding: 30px 24px 20px 24px; color: #ffffff;">
+              <span class="badge badge-govt" style="margin-bottom: 6px;">फर्स्ट माइल कनेक्टिविटी • Rapid Rail Silo Loading</span>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin: 4px 0;">
+                6. फर्स्ट माइल कनेक्टिविटी (FMC) साइलो रैपिड रेल लोडिंग एवं हरित गलियारा
+              </h2>
+              <p style="font-size: 0.85rem; color: #cbd5e1; max-width: 900px; margin: 0;">
+                सड़क परिवहन धूल में 85% कमी हेतु बंद कन्वेयर बेल्ट व साइलो लोडिंग। खदान उपरांत हरित वृक्षारोपण एवं इको-टूरिज्म पार्क निर्माण।
+              </p>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <!-- Slide Indicators -->
+        <div style="background: var(--color-bg-tertiary); padding: 8px; display: flex; justify-content: center; gap: 8px;">
+          <button onclick="goToSlide(0)" class="slide-dot active" style="width: 24px; height: 6px; border-radius: 3px; border: none; background: var(--color-gold); cursor: pointer;"></button>
+          <button onclick="goToSlide(1)" class="slide-dot" style="width: 24px; height: 6px; border-radius: 3px; border: none; background: var(--color-border); cursor: pointer;"></button>
+          <button onclick="goToSlide(2)" class="slide-dot" style="width: 24px; height: 6px; border-radius: 3px; border: none; background: var(--color-border); cursor: pointer;"></button>
+          <button onclick="goToSlide(3)" class="slide-dot" style="width: 24px; height: 6px; border-radius: 3px; border: none; background: var(--color-border); cursor: pointer;"></button>
+          <button onclick="goToSlide(4)" class="slide-dot" style="width: 24px; height: 6px; border-radius: 3px; border: none; background: var(--color-border); cursor: pointer;"></button>
+          <button onclick="goToSlide(5)" class="slide-dot" style="width: 24px; height: 6px; border-radius: 3px; border: none; background: var(--color-border); cursor: pointer;"></button>
+        </div>
+      </div>
+
+      <!-- 3. Dynamic News & Directives Feed (Fixes Flaw 2 of coal.nic.in: Static unsearchable PDF graveyard) -->
+      <div class="grid grid-2 mb-lg">
+        
+        <!-- Left Tab: What's New / Circulars -->
+        <div class="card">
+          <div class="tabs-header">
+            <button class="tab-btn active" onclick="switchTab(this, 'tab-whats-new')">📢 What's New • नया क्या है</button>
+            <button class="tab-btn" onclick="switchTab(this, 'tab-press-releases')">📰 Press Releases (PIB)</button>
+            <button class="tab-btn" onclick="switchTab(this, 'tab-dgms-safety')">🚨 DGMS Safety Alerts</button>
+          </div>
+
+          <div id="tab-whats-new" class="tab-content active">
+            <ul class="official-feed-list">
+              <li class="official-feed-item">
+                <div class="feed-date-badge">
+                  <div class="feed-day">08</div>
+                  <div class="feed-month">SEP 26</div>
+                </div>
+                <div class="feed-details">
+                  <div class="feed-title">
+                    <a href="javascript:void(0)" onclick="App.showToast('Opening Scheme Circular...', 'info')">
+                      Scheme for Promotion of Surface Coal/Lignite Gasification Projects (₹37,500 Crore): Timeline of Round-2 Application Process
+                    </a>
+                  </div>
+                  <div class="feed-meta">
+                    <span>Ministry of Coal</span> • <span>PDF (1.24 MB)</span> • <span class="badge badge-emerald">Verified</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="official-feed-item">
+                <div class="feed-date-badge">
+                  <div class="feed-day">07</div>
+                  <div class="feed-month">SEP 26</div>
+                </div>
+                <div class="feed-details">
+                  <div class="feed-title">
+                    <a href="javascript:void(0)" onclick="App.showToast('Opening National Lignite Index...', 'info')">
+                      National Lignite Index with Base Year 2021-22 for the month of July 2026 released by Nominated Authority
+                    </a>
+                  </div>
+                  <div class="feed-meta">
+                    <span>Nominated Authority</span> • <span>PDF (1.81 MB)</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="official-feed-item">
+                <div class="feed-date-badge">
+                  <div class="feed-day">03</div>
+                  <div class="feed-month">SEP 26</div>
+                </div>
+                <div class="feed-details">
+                  <div class="feed-title">
+                    <a href="javascript:void(0)" onclick="App.showToast('Opening Bank Details Notice...', 'info')">
+                      Bank Account Details for Furnishing of Bank Guarantee/RTGS/NEFT under Financial Incentive Scheme
+                    </a>
+                  </div>
+                  <div class="feed-meta">
+                    <span>Finance Division</span> • <span>PDF (99.7 KB)</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div id="tab-press-releases" class="tab-content">
+            <ul class="official-feed-list">
+              <li class="official-feed-item">
+                <div class="feed-date-badge">
+                  <div class="feed-day">08</div>
+                  <div class="feed-month">JUL 26</div>
+                </div>
+                <div class="feed-details">
+                  <div class="feed-title">
+                    Ministry of Coal Invites Applications under ₹37,500 Crore Scheme for Promotion of Surface Coal/Lignite Gasification
+                  </div>
+                  <div class="feed-meta">PIB New Delhi • Press Information Bureau</div>
+                </div>
+              </li>
+              <li class="official-feed-item">
+                <div class="feed-date-badge">
+                  <div class="feed-day">02</div>
+                  <div class="feed-month">JUL 26</div>
+                </div>
+                <div class="feed-details">
+                  <div class="feed-title">
+                    Ministry of Coal Notifies Acceptance of Insurance Surety Bonds for MMDR Coal Blocks Auction
+                  </div>
+                  <div class="feed-meta">PIB New Delhi • Press Information Bureau</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div id="tab-dgms-safety" class="tab-content">
+            <ul class="official-feed-list">
+              <li class="official-feed-item">
+                <div class="feed-date-badge">
+                  <div class="feed-day">04</div>
+                  <div class="feed-month">MAR 26</div>
+                </div>
+                <div class="feed-details">
+                  <div class="feed-title" style="color:var(--color-red);">
+                    🚨 Critical Notice: Hydrogeological barrier inspection mandatory under DGMS Regulation 127 for waterlogged seams.
+                  </div>
+                  <div class="feed-meta">Directorate General of Mines Safety • Dhanbad</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Card: Why Kshoni AI Solves Real Bottlenecks -->
+        <div class="card" style="border-top: 3px solid var(--color-gold);">
+          <div class="card-header">
+            <h3 class="card-title">
+              💡 Transforming Indian Mining Data Governance
+            </h3>
+            <span class="badge badge-govt">Digital India Flagship</span>
+          </div>
+
+          <div style="font-size:0.88rem; color:var(--color-text-secondary); line-height:1.6;">
+            <p>
+              Traditional coal portals like <code>coal.nic.in</code> rely heavily on manual PDF uploads, leaving geological reports, borehole core samples, and statutory compliance status locked in unstructured files.
+            </p>
+            
+            <div style="margin: 16px 0; display:flex; flex-direction:column; gap:10px;">
+              <div style="display:flex; align-items:flex-start; gap:10px; background:var(--color-bg-tertiary); padding:10px; border-radius:6px;">
+                <span style="color:#10b981; font-weight:800; font-size:1.1rem;">✓</span>
+                <div>
+                  <strong style="color:var(--color-text-primary);">Intelligent Semantic Search:</strong> Ask natural-language questions across millions of borehole logs with instant citations.
+                </div>
+              </div>
+
+              <div style="display:flex; align-items:flex-start; gap:10px; background:var(--color-bg-tertiary); padding:10px; border-radius:6px;">
+                <span style="color:#10b981; font-weight:800; font-size:1.1rem;">✓</span>
+                <div>
+                  <strong style="color:var(--color-text-primary);">Automated UNFC Classification:</strong> Instantly categorize coal reserves into Proved (111), Indicated (222), and Inferred (333).
+                </div>
+              </div>
+
+              <div style="display:flex; align-items:flex-start; gap:10px; background:var(--color-bg-tertiary); padding:10px; border-radius:6px;">
+                <span style="color:#10b981; font-weight:800; font-size:1.1rem;">✓</span>
+                <div>
+                  <strong style="color:var(--color-text-primary);">Interactive 3D Strata Modeling:</strong> Visualize seams, fault planes, and GCV gradients in real-time browser 3D without desktop software.
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:16px;">
+              <a href="dashboard.html" class="btn btn-gold btn-sm">Explore National Dashboard</a>
+              <a href="compliance.html" class="btn btn-secondary btn-sm">View Compliance Auditor</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Official Government Footer Mount -->
+  <div id="govt-footer-mount"></div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function switchTab(btn, tabId) {
+      const parent = btn.closest('.card');
+      parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+    }
+
+    // Photo Carousel Controller
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.photo-slide');
+    const dots = document.querySelectorAll('.slide-dot');
+
+    function goToSlide(idx) {
+      if (!slides.length) return;
+      slides.forEach((s, i) => {
+        s.style.opacity = i === idx ? '1' : '0';
+        s.style.pointerEvents = i === idx ? 'auto' : 'none';
+      });
+      dots.forEach((d, i) => {
+        d.style.background = i === idx ? 'var(--color-gold)' : 'var(--color-border)';
+      });
+      currentSlide = idx;
+    }
+
+    function nextSlide() {
+      goToSlide((currentSlide + 1) % slides.length);
+    }
+
+    function prevSlide() {
+      goToSlide((currentSlide - 1 + slides.length) % slides.length);
+    }
+
+    // Auto rotate every 6 seconds
+    setInterval(nextSlide, 6000);
+  </script>
+</body>
+</html>

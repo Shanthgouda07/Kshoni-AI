@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="3D Geo-Visualization — Interactive 3D Subsurface Borehole & Coal Seam Strata Model">
+    <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+    <meta name="robots" content="noindex, nofollow">
+  <title>3D Geo-Visualization | Kshoni AI • CMPDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <!-- CDN Three.js and OrbitControls -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+  <div id="govt-top-header-mount"></div>
+  <div class="app-layout">
+    <!-- Sidebar dynamically rendered -->
+    <div id="sidebar-mount"></div>
+
+    <main class="main-content">
+      <!-- Header dynamically rendered -->
+      <div id="header-mount"></div>
+
+      <div class="content-body">
+        <div class="viz-container">
+          <!-- Main 3D Viewport -->
+          <div class="viz-canvas-wrapper" id="viz-wrapper">
+            <!-- Viewport Toolbar Overlay -->
+            <div class="viz-controls-overlay">
+              <button class="btn btn-secondary btn-xs" onclick="VizPage.resetCamera()" title="Reset Camera View">🎥 Reset View</button>
+              <button class="btn btn-secondary btn-xs" onclick="VizPage.setPresetView('top')" title="Top Plan View">🗺️ Plan View</button>
+              <button class="btn btn-secondary btn-xs" onclick="VizPage.setPresetView('subsurface')" title="Underground Seam View">⛏️ Seams Focus</button>
+              <button class="btn btn-secondary btn-xs" onclick="VizPage.toggleWireframe()" id="btn-wireframe" title="Toggle Mesh Wireframe">🕸️ Wireframe</button>
+              <div style="border-left: 1px solid var(--border-color); padding-left: 8px; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.78rem; color: var(--text-tertiary);">Coloring:</span>
+                <select class="form-select" style="padding: 2px 6px; font-size: 0.78rem; width: auto;" onchange="VizPage.changeColorMode(this.value)">
+                  <option value="seam">By Seam Classification</option>
+                  <option value="gcv">By GCV Calorific Value</option>
+                  <option value="ash">By Ash Percentage</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Three.js Canvas Mount -->
+            <div id="three-canvas-container" style="width: 100%; height: 100%;"></div>
+
+            <!-- Hover Info Tooltip Overlay -->
+            <div id="viz-tooltip" style="position: absolute; display: none; background: rgba(10,22,40,0.92); border: 1px solid var(--color-gold); padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; pointer-events: none; z-index: 20;"></div>
+          </div>
+
+          <!-- Right Sidebar: Layers & Selected Borehole Inspector -->
+          <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Mine Block Selector</h3>
+              </div>
+              <select class="form-select" onchange="VizPage.loadBlock(this.value)">
+                <option value="jharia">Jharia Coalfield — Block IX (BCCL)</option>
+                <option value="korba">Korba Coalfield — Gevra OC (SECL)</option>
+                <option value="talcher">Talcher Coalfield — Kaniha (MCL)</option>
+              </select>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Strata Layer Toggles</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div class="seam-legend-item">
+                  <input type="checkbox" checked onchange="VizPage.toggleSeam('seam9', this.checked)">
+                  <div class="seam-color-swatch" style="background: #10B981;"></div>
+                  <div style="flex: 1; font-weight: 600;">Seam IX (Prime Coking)</div>
+                  <span style="font-family: var(--font-mono); color: var(--text-tertiary);">6.6m</span>
+                </div>
+                <div class="seam-legend-item">
+                  <input type="checkbox" checked onchange="VizPage.toggleSeam('seam5', this.checked)">
+                  <div class="seam-color-swatch" style="background: #F59E0B;"></div>
+                  <div style="flex: 1; font-weight: 600;">Seam V/VI (Medium)</div>
+                  <span style="font-family: var(--font-mono); color: var(--text-tertiary);">5.5m</span>
+                </div>
+                <div class="seam-legend-item">
+                  <input type="checkbox" checked onchange="VizPage.toggleSeam('seam3', this.checked)">
+                  <div class="seam-color-swatch" style="background: #3B82F6;"></div>
+                  <div style="flex: 1; font-weight: 600;">Seam III (Basal Coal)</div>
+                  <span style="font-family: var(--font-mono); color: var(--text-tertiary);">6.3m</span>
+                </div>
+                <div class="seam-legend-item">
+                  <input type="checkbox" checked onchange="VizPage.toggleSeam('fault', this.checked)">
+                  <div class="seam-color-swatch" style="background: #EF4444;"></div>
+                  <div style="flex: 1; font-weight: 600;">Geological Fault Plane F-1</div>
+                  <span style="font-family: var(--font-mono); color: var(--color-red);">Throw 14m</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Borehole Detail Inspector Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title" id="bh-inspector-title">Selected Borehole: BH-042</h3>
+              </div>
+              <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;" id="bh-inspector-body">
+                <div class="flex flex-between">
+                  <span style="color: var(--text-secondary);">Collar Coordinates:</span>
+                  <span style="font-family: var(--font-mono); font-weight: 600;">23.765°N, 86.341°E</span>
+                </div>
+                <div class="flex flex-between">
+                  <span style="color: var(--text-secondary);">Collar Elevation (RL):</span>
+                  <span style="font-family: var(--font-mono);">+214.5 m MSL</span>
+                </div>
+                <div class="flex flex-between">
+                  <span style="color: var(--text-secondary);">Total Drilled Depth:</span>
+                  <span style="font-family: var(--font-mono); color: var(--color-gold-light); font-weight: 700;">185.0 meters</span>
+                </div>
+                <div class="flex flex-between">
+                  <span style="color: var(--text-secondary);">Net Coal Thickness:</span>
+                  <span style="font-family: var(--font-mono); color: var(--color-emerald); font-weight: 700;">18.4 meters</span>
+                </div>
+                <div class="flex flex-between">
+                  <span style="color: var(--text-secondary);">Mean GCV Value:</span>
+                  <span style="font-family: var(--font-mono);">6,420 kcal/kg</span>
+                </div>
+              </div>
+
+              <div class="mt-md pt-sm" style="border-top: 1px solid var(--border-color);">
+                <button class="btn btn-secondary w-full btn-sm" onclick="VizPage.generateCrossSection()">
+                  ✂️ Generate Cross-Section A-A'
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="govt-footer-mount"></div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/data/boreholes.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/visualization.js"></script>
+</body>
+</html>

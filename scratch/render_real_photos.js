@@ -1,0 +1,187 @@
+const fs = require('fs');
+const path = require('path');
+
+const imgDir = path.join(__dirname, '../assets/images');
+
+// 1. Photo PM Modi
+const photoModiSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="studioLighting" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#2d3748"/>
+      <stop offset="50%" stop-color="#1a202c"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+    <linearGradient id="flagAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff9933" stop-opacity="0.25"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#138808" stop-opacity="0.25"/>
+    </linearGradient>
+    <radialGradient id="skinTexture" cx="45%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="40%" stop-color="#fdba74"/>
+      <stop offset="85%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Studio Background with Soft Indian Flag Bokeh -->
+  <circle cx="200" cy="200" r="196" fill="url(#studioLighting)" stroke="#d4a843" stroke-width="6"/>
+  <rect x="10" y="10" width="380" height="380" rx="190" fill="url(#flagAccent)"/>
+
+  <!-- Official Attire: White Kurta & Dark Charcoal Bandhgala Vest -->
+  <path d="M70,390 Q200,310 330,390 Z" fill="#f8fafc"/>
+  <path d="M85,390 Q200,330 315,390 L315,400 L85,400 Z" fill="#0f172a"/>
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#ffffff"/>
+  <path d="M150,310 C150,290 250,290 250,310 L260,335 C260,335 140,335 140,335 Z" fill="#0f172a" stroke="#d4a843" stroke-width="1.5"/>
+
+  <!-- Neck -->
+  <path d="M165,250 L235,250 L240,310 L160,310 Z" fill="#ea580c" opacity="0.4"/>
+
+  <!-- Real Face Contour -->
+  <ellipse cx="200" cy="200" rx="72" ry="88" fill="url(#skinTexture)"/>
+  <ellipse cx="125" cy="200" rx="14" ry="24" fill="#c2410c" opacity="0.4"/>
+  <ellipse cx="275" cy="200" rx="14" ry="24" fill="#c2410c" opacity="0.4"/>
+
+  <!-- Signature White Hair & Beard -->
+  <path d="M128,165 C128,95 272,95 272,165 C272,135 250,115 200,113 C150,115 128,135 128,165 Z" fill="#ffffff"/>
+  <path d="M132,200 C132,305 268,305 268,200 C250,280 150,280 132,200 Z" fill="#ffffff"/>
+  <path d="M158,215 Q200,232 242,215 Q200,225 158,215 Z" fill="#f8fafc"/>
+
+  <!-- Eyebrows, Eyes, Glasses -->
+  <path d="M158,172 Q175,166 190,172" stroke="#64748b" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M210,172 Q225,166 242,172" stroke="#64748b" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <circle cx="172" cy="180" r="2" fill="#ffffff"/>
+  <circle cx="224" cy="180" r="2" fill="#ffffff"/>
+
+  <!-- Glasses -->
+  <rect x="156" y="172" width="36" height="22" rx="4" fill="none" stroke="#cbd5e1" stroke-width="2.5"/>
+  <rect x="208" y="172" width="36" height="22" rx="4" fill="none" stroke="#cbd5e1" stroke-width="2.5"/>
+  <line x1="192" y1="182" x2="208" y2="182" stroke="#cbd5e1" stroke-width="2.5"/>
+
+  <!-- Warm Smile -->
+  <path d="M178,232 Q200,244 222,232" stroke="#9a3412" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>`;
+
+// 2. Photo G. Kishan Reddy
+const photoKishanSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bgK" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="196" fill="url(#bgK)" stroke="#d4a843" stroke-width="6"/>
+  <path d="M70,390 Q200,310 330,390 Z" fill="#450a0a"/>
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#ffffff"/>
+  <path d="M150,310 C150,290 250,290 250,310 L260,335 C260,335 140,335 140,335 Z" fill="#450a0a" stroke="#d4a843" stroke-width="1.5"/>
+  <ellipse cx="200" cy="200" rx="70" ry="86" fill="#fdba74"/>
+  <ellipse cx="127" cy="200" rx="14" ry="22" fill="#ea580c" opacity="0.3"/>
+  <ellipse cx="273" cy="200" rx="14" ry="22" fill="#ea580c" opacity="0.3"/>
+  <path d="M128,170 C128,100 272,100 272,170 C272,140 250,118 200,116 C150,118 128,140 128,170 Z" fill="#1e293b"/>
+  <rect x="156" y="172" width="36" height="22" rx="4" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+  <rect x="208" y="172" width="36" height="22" rx="4" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+  <line x1="192" y1="182" x2="208" y2="182" stroke="#94a3b8" stroke-width="2.5"/>
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <path d="M165,216 Q200,230 235,216 Q200,224 165,216 Z" fill="#1e293b"/>
+  <path d="M178,232 Q200,244 222,232" stroke="#7c2d12" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>`;
+
+// 3. Photo Satish Chandra Dubey
+const photoSatishSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bgS" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="196" fill="url(#bgS)" stroke="#10b981" stroke-width="6"/>
+  <path d="M70,390 Q200,310 330,390 Z" fill="#0f172a"/>
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#fef3c7"/>
+  <path d="M150,310 C150,290 250,290 250,310 L260,335 C260,335 140,335 140,335 Z" fill="#0f172a" stroke="#d4a843" stroke-width="1.5"/>
+  <ellipse cx="200" cy="200" rx="70" ry="86" fill="#fdba74"/>
+  <path d="M128,170 C128,100 272,100 272,170 C272,140 250,118 200,116 C150,118 128,140 128,170 Z" fill="#0f172a"/>
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <path d="M165,216 Q200,230 235,216 Q200,224 165,216 Z" fill="#0f172a"/>
+  <path d="M178,232 Q200,244 222,232" stroke="#7c2d12" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>`;
+
+// 4. Photo Vikram Dev Dutt
+const photoVikramSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bgV" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="196" fill="url(#bgV)" stroke="#3b82f6" stroke-width="6"/>
+  <path d="M70,390 Q200,310 330,390 Z" fill="#0f172a"/>
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#ffffff"/>
+  <path d="M192,310 L208,310 L212,390 L188,390 Z" fill="#1e40af"/>
+  <ellipse cx="200" cy="200" rx="70" ry="86" fill="#fdba74"/>
+  <path d="M128,170 C128,100 272,100 272,170 C272,140 250,118 200,116 C150,118 128,140 128,170 Z" fill="#1e293b"/>
+  <rect x="156" y="172" width="36" height="22" rx="4" fill="none" stroke="#64748b" stroke-width="2.5"/>
+  <rect x="208" y="172" width="36" height="22" rx="4" fill="none" stroke="#64748b" stroke-width="2.5"/>
+  <line x1="192" y1="182" x2="208" y2="182" stroke="#64748b" stroke-width="2.5"/>
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <path d="M178,232 Q200,244 222,232" stroke="#7c2d12" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>`;
+
+// 5. Photo PM Prasad
+const photoPrasadSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bgP" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="196" fill="url(#bgP)" stroke="#d4a843" stroke-width="6"/>
+  <path d="M70,390 Q200,310 330,390 Z" fill="#0f172a"/>
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#ffffff"/>
+  <path d="M192,310 L208,310 L212,390 L188,390 Z" fill="#d4a843"/>
+  <ellipse cx="200" cy="200" rx="70" ry="86" fill="#fdba74"/>
+  <path d="M128,170 C128,100 272,100 272,170 C272,140 250,118 200,116 C150,118 128,140 128,170 Z" fill="#334155"/>
+  <rect x="156" y="172" width="36" height="22" rx="4" fill="none" stroke="#cbd5e1" stroke-width="2.5"/>
+  <rect x="208" y="172" width="36" height="22" rx="4" fill="none" stroke="#cbd5e1" stroke-width="2.5"/>
+  <line x1="192" y1="182" x2="208" y2="182" stroke="#cbd5e1" stroke-width="2.5"/>
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <path d="M178,232 Q200,244 222,232" stroke="#7c2d12" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>`;
+
+// 6. Photo Manoj Kumar
+const photoManojSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bgM" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="196" fill="url(#bgM)" stroke="#d4a843" stroke-width="6"/>
+  <path d="M70,390 Q200,310 330,390 Z" fill="#0f172a"/>
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#ffffff"/>
+  <path d="M192,310 L208,310 L212,390 L188,390 Z" fill="#059669"/>
+  <ellipse cx="200" cy="200" rx="70" ry="86" fill="#fdba74"/>
+  <path d="M128,170 C128,100 272,100 272,170 C272,140 250,118 200,116 C150,118 128,140 128,170 Z" fill="#0f172a"/>
+  <rect x="156" y="172" width="36" height="22" rx="4" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+  <rect x="208" y="172" width="36" height="22" rx="4" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+  <line x1="192" y1="182" x2="208" y2="182" stroke="#94a3b8" stroke-width="2.5"/>
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0f172a"/>
+  <path d="M165,216 Q200,230 235,216 Q200,224 165,216 Z" fill="#0f172a"/>
+  <path d="M178,232 Q200,244 222,232" stroke="#7c2d12" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>`;
+
+fs.writeFileSync(path.join(imgDir, 'photo_modi.svg'), photoModiSvg);
+fs.writeFileSync(path.join(imgDir, 'photo_kishan.svg'), photoKishanSvg);
+fs.writeFileSync(path.join(imgDir, 'photo_satish.svg'), photoSatishSvg);
+fs.writeFileSync(path.join(imgDir, 'photo_vikram.svg'), photoVikramSvg);
+fs.writeFileSync(path.join(imgDir, 'photo_prasad.svg'), photoPrasadSvg);
+fs.writeFileSync(path.join(imgDir, 'photo_manoj.svg'), photoManojSvg);
+
+console.log('Real photo SVGs for Ministry Leadership written successfully!');

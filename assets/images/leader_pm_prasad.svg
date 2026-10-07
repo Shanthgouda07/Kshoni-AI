@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgPrasad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="60%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#020617" />
+    </radialGradient>
+    <radialGradient id="skinPrasad" cx="45%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="45%" stop-color="#F59E0B" />
+      <stop offset="85%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#B45309" />
+    </radialGradient>
+    <linearGradient id="goldP" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="50%" stop-color="#D4A843" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+    <filter id="shadowP" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="200" r="192" fill="url(#bgPrasad)" stroke="url(#goldP)" stroke-width="8" filter="url(#shadowP)" />
+
+  <!-- Background CIL Emblem Watermark -->
+  <circle cx="200" cy="140" r="70" fill="none" stroke="#D4A843" stroke-width="1" opacity="0.15" />
+
+  <!-- Attire (CIL Chairman Executive Dark Suit & Gold Pin) -->
+  <path d="M70,390 Q200,310 330,390 Z" fill="#0F172A" />
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#FFFFFF" />
+  <path d="M192,310 L208,310 L212,390 L188,390 Z" fill="#D4A843" />
+
+  <!-- Neck -->
+  <path d="M165,250 L235,250 L240,310 L160,310 Z" fill="#D97706" />
+
+  <!-- Head -->
+  <ellipse cx="200" cy="200" rx="70" ry="86" fill="url(#skinPrasad)" />
+  <ellipse cx="127" cy="200" rx="14" ry="22" fill="#D97706" />
+  <ellipse cx="273" cy="200" rx="14" ry="22" fill="#D97706" />
+
+  <!-- Hair (Executive Salt and Pepper Style) -->
+  <path d="M128,170 C128,100 272,100 272,170 C272,140 250,118 200,116 C150,118 128,140 128,170 Z" fill="#334155" />
+
+  <!-- Eyebrows & Eyes -->
+  <path d="M158,172 Q175,166 190,172" stroke="#0F172A" stroke-width="4.5" fill="none" stroke-linecap="round" />
+  <path d="M210,172 Q225,166 242,172" stroke="#0F172A" stroke-width="4.5" fill="none" stroke-linecap="round" />
+
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0F172A" />
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0F172A" />
+  <circle cx="172" cy="180" r="2" fill="#FFFFFF" />
+  <circle cx="224" cy="180" r="2" fill="#FFFFFF" />
+
+  <!-- Glasses -->
+  <rect x="156" y="172" width="36" height="22" rx="4" fill="none" stroke="#CBD5E1" stroke-width="2.5" />
+  <rect x="208" y="172" width="36" height="22" rx="4" fill="none" stroke="#CBD5E1" stroke-width="2.5" />
+  <line x1="192" y1="182" x2="208" y2="182" stroke="#CBD5E1" stroke-width="2.5" />
+
+  <!-- Nose -->
+  <path d="M196,182 L192,208 L208,208 L204,182 Z" fill="#D97706" opacity="0.4" />
+
+  <!-- Smile -->
+  <path d="M178,232 Q200,244 222,232" stroke="#7C2D12" stroke-width="3.5" fill="none" stroke-linecap="round" />
+</svg>

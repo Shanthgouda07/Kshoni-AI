@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <rect width="240" height="70" rx="6" fill="#0D9488"/>
+  <text x="120" y="32" font-family="'Inter', sans-serif" font-weight="700" font-size="12" fill="#CCFBF1" text-anchor="middle">National Government</text>
+  <text x="120" y="52" font-family="'Inter', sans-serif" font-weight="900" font-size="18" fill="#FFFFFF" text-anchor="middle">Services Portal</text>
+</svg>

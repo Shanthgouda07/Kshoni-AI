@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgSatish" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#065F46" />
+      <stop offset="60%" stop-color="#064E3B" />
+      <stop offset="100%" stop-color="#022C22" />
+    </radialGradient>
+    <radialGradient id="skinSatish" cx="45%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="45%" stop-color="#F59E0B" />
+      <stop offset="85%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#B45309" />
+    </radialGradient>
+    <linearGradient id="goldS" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#D4A843" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="shadowS" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="200" r="192" fill="url(#bgSatish)" stroke="url(#goldS)" stroke-width="8" filter="url(#shadowS)" />
+
+  <!-- Attire (Official Indian Cream Kurta & Navy Bandhgala Jacket) -->
+  <path d="M70,390 Q200,310 330,390 Z" fill="#0F172A" />
+  <path d="M165,320 L235,320 L235,390 L165,390 Z" fill="#FEF3C7" />
+  <path d="M150,310 C150,290 250,290 250,310 L260,335 C260,335 140,335 140,335 Z" fill="#0F172A" stroke="#D4A843" stroke-width="1.5" />
+
+  <!-- Neck -->
+  <path d="M165,250 L235,250 L240,310 L160,310 Z" fill="#D97706" />
+
+  <!-- Head -->
+  <ellipse cx="200" cy="200" rx="70" ry="86" fill="url(#skinSatish)" />
+  <ellipse cx="127" cy="200" rx="14" ry="22" fill="#D97706" />
+  <ellipse cx="273" cy="200" rx="14" ry="22" fill="#D97706" />
+
+  <!-- Hair (Black Executive Crop) -->
+  <path d="M128,170 C128,100 272,100 272,170 C272,140 250,118 200,116 C150,118 128,140 128,170 Z" fill="#0F172A" />
+
+  <!-- Eyebrows & Eyes -->
+  <path d="M158,172 Q175,166 190,172" stroke="#0F172A" stroke-width="4.5" fill="none" stroke-linecap="round" />
+  <path d="M210,172 Q225,166 242,172" stroke="#0F172A" stroke-width="4.5" fill="none" stroke-linecap="round" />
+
+  <ellipse cx="174" cy="182" rx="7" ry="5" fill="#0F172A" />
+  <ellipse cx="226" cy="182" rx="7" ry="5" fill="#0F172A" />
+  <circle cx="172" cy="180" r="2" fill="#FFFFFF" />
+  <circle cx="224" cy="180" r="2" fill="#FFFFFF" />
+
+  <!-- Nose -->
+  <path d="M196,182 L192,208 L208,208 L204,182 Z" fill="#D97706" opacity="0.4" />
+
+  <!-- Mustache -->
+  <path d="M165,216 Q200,230 235,216 Q200,224 165,216 Z" fill="#0F172A" />
+
+  <!-- Smile -->
+  <path d="M178,232 Q200,244 222,232" stroke="#7C2D12" stroke-width="3.5" fill="none" stroke-linecap="round" />
+</svg>

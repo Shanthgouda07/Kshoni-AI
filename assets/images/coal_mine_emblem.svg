@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80">
+  <!-- Outer Gold & Navy Ring -->
+  <circle cx="50" cy="50" r="46" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5" />
+  <circle cx="50" cy="50" r="42" fill="#F8FAFC" stroke="#D4A843" stroke-width="1.8" stroke-dasharray="2 1" />
+  <circle cx="50" cy="50" r="32" fill="#0F172A" />
+
+  <!-- Crossed Mining Pickaxes -->
+  <g stroke="#D4A843" stroke-width="2.4" stroke-linecap="round">
+    <!-- Pickaxe 1 -->
+    <line x1="28" y1="72" x2="72" y2="28" />
+    <path d="M 64 22 Q 74 26 78 36 Q 72 32 68 34 Z" fill="#D4A843" stroke="#D4A843" />
+    <!-- Pickaxe 2 -->
+    <line x1="72" y1="72" x2="28" y2="28" />
+    <path d="M 36 22 Q 26 26 22 36 Q 28 32 32 34 Z" fill="#D4A843" stroke="#D4A843" />
+  </g>
+
+  <!-- Central Coal Rock / Mineral Facet -->
+  <polygon points="50,38 59,46 56,58 44,58 41,46" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.2" />
+  <polygon points="50,38 56,58 50,54" fill="#0284C7" />
+  <polygon points="41,46 50,38 50,54 44,58" fill="#0369A1" />
+
+  <!-- Star Embellishments -->
+  <circle cx="50" cy="22" r="1.8" fill="#D4A843" />
+  <circle cx="50" cy="78" r="1.8" fill="#D4A843" />
+  <circle cx="22" cy="50" r="1.8" fill="#D4A843" />
+  <circle cx="78" cy="50" r="1.8" fill="#D4A843" />
+</svg>

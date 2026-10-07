@@ -1,0 +1,580 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="National Geological Database & Master AI Final Report Hub — CMPDI Coal India Limited">
+    <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+    <meta name="robots" content="noindex, nofollow">
+  <title>Master Geological Database & AI Final Report | Kshoni AI • CMPDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <div id="govt-top-header-mount"></div>
+  <div class="app-layout">
+    <!-- Sidebar dynamically rendered -->
+    <div id="sidebar-mount"></div>
+
+    <main class="main-content">
+      <!-- Header dynamically rendered -->
+      <div id="header-mount"></div>
+
+      <div class="content-body">
+        <!-- Master Final AI Report Generator Hero Banner -->
+        <div class="card mb-xl bg-gradient" style="background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,58,95,0.8)); border: 2px solid var(--color-gold);">
+          <div class="flex flex-between align-center flex-wrap gap-lg">
+            <div style="flex: 1; min-width: 300px;">
+              <div class="inline-flex align-center gap-xs mb-xs" style="color: var(--color-gold);">
+                <span>✨</span> <span style="font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase;">National AI Geological Synthesis Engine</span>
+              </div>
+              <h2 style="font-size: 1.6rem; margin-bottom: 6px; color: #FFFFFF;">Central Geological Database & Master Final AI Report Hub</h2>
+              <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                Access over <strong>18,542 verified borehole logs</strong>, historical exploration archives from <strong>1975 to 2026</strong>, UNFC reserve estimates, and chemical assays across all 8 Coal India subsidiaries. Generate public master statutory reports with one click.
+              </p>
+            </div>
+            <div class="flex gap-sm flex-wrap">
+              <button class="btn btn-primary" style="padding: 12px 20px; font-weight: 800; font-size: 0.95rem;" onclick="DatabasePage.generateMasterAIReport()">
+                ⚡ Generate Master AI Final Report
+              </button>
+              <button class="btn btn-secondary" onclick="DatabasePage.downloadFullDataset()">
+                📥 Download Master Dataset (CSV)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master AI Report Modal / Display Section -->
+        <div class="master-report-wrapper mb-xl" id="master-report-card">
+          
+          <!-- Report Interactive Controls Toolbar -->
+          <div class="master-report-toolbar no-print">
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="report-mine-select" style="font-size: 0.82rem; font-weight: 700; color: #854D0E; text-transform: uppercase;">Mine Block:</label>
+                <select id="report-mine-select" class="form-select" style="width: auto; font-size: 0.85rem; padding: 6px 12px; background: #FFFFFF; color: #0F172A; border: 1.5px solid #CBD5E1; font-weight: 600;" onchange="DatabasePage.onMineChange(this.value)">
+                  <option value="SECL_GEVRA">SECL — Gevra Mega Opencast Project (Korba)</option>
+                  <option value="BCCL_JHARIA">BCCL — Jharia Block IX & Moonidih Deep Sector</option>
+                  <option value="MCL_TALCHER">MCL — Talcher Ananta & Kaniha Mega OC</option>
+                  <option value="CCL_AMRAPALI">CCL — Amrapali Mega Opencast Project (Karanpura)</option>
+                  <option value="NCL_JAYANT">NCL — Jayant Mega Dragline OC Project (Singrauli)</option>
+                  <option value="ECL_SONALPUR">ECL — Sonalpur Bazari Deep OC Project (Raniganj)</option>
+                </select>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="report-date-input" style="font-size: 0.82rem; font-weight: 700; color: #475569; text-transform: uppercase;">Statutory Date:</label>
+                <input type="date" id="report-date-input" class="form-input" style="width: auto; font-size: 0.85rem; padding: 6px 10px; background: #FFFFFF; color: #0F172A; border: 1.5px solid #CBD5E1;" value="2026-09-09" onchange="DatabasePage.onDateChange(this.value)">
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span class="badge" style="background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; font-weight: 700; padding: 6px 10px;">RESTRICTED • STATUTORY REPORT</span>
+              <button class="btn btn-secondary btn-sm" onclick="DatabasePage.printReport()" title="Print on official letterhead or save PDF">
+                🖨️ Print / Save PDF
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="DatabasePage.downloadReportDoc()" title="Export official Word document">
+                📄 Download Word (.doc)
+              </button>
+            </div>
+          </div>
+
+          <!-- Report Document Paper (Clean Light Mode) -->
+          <div class="master-report-body" id="master-report-print-root">
+            
+            <!-- Official Government Header with Coal Mine Logo -->
+            <div class="master-report-header">
+              <div class="master-header-seal">
+                <img src="assets/images/emblem_india.svg" alt="Emblem of India" style="height: 60px; width: auto;" />
+                <div>
+                  <div style="font-size: 0.78rem; font-weight: 800; color: #854D0E; letter-spacing: 0.8px; text-transform: uppercase;">
+                    भारत सरकार • कोयला मंत्रालय • सीएमपीडीआई
+                  </div>
+                  <div style="font-size: 1.12rem; font-weight: 800; color: #0F172A; letter-spacing: 0.3px; text-transform: uppercase;">
+                    Government of India • Ministry of Coal • CMPDI
+                  </div>
+                  <h2 id="report-doc-title" style="font-size: 1.25rem; font-weight: 800; color: #0F172A; margin: 4px 0 2px 0; line-height: 1.25;">
+                    STATUTORY MASTER GEOLOGICAL & MINE EXTRACTION REPORT
+                  </h2>
+                  <div id="report-mine-subtitle" style="font-size: 0.90rem; color: #475569; font-weight: 600;">
+                    Gevra Mega Opencast Project • Korba Coalfield, SECL (Chhattisgarh)
+                  </div>
+                </div>
+              </div>
+
+              <!-- Coal Mine Logo & Statutory Reference -->
+              <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
+                <img src="assets/images/coal_mine_emblem.svg" alt="Official Coal Mine Emblem" style="height: 62px; width: 62px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));" title="Official Coal Mining Sector Seal" />
+                <div>
+                  <div id="report-doc-ref" style="font-family: var(--font-mono); font-weight: 800; color: #854D0E; font-size: 0.85rem;">
+                    CMPDI/HQ/STAT-GR/2026/GVR-804
+                  </div>
+                  <div id="report-doc-date-display" style="font-size: 0.82rem; color: #475569; margin-top: 2px; font-weight: 600;">
+                    Date: 09 September 2026
+                  </div>
+                  <div style="margin-top: 6px; display: flex; gap: 6px; justify-content: flex-end;">
+                    <span class="badge" style="background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; font-size: 0.72rem; font-weight: 600;">✓ UNFC 111</span>
+                    <span class="badge" style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; font-size: 0.72rem; font-weight: 600;">✓ DGMS Reg 127</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Indian Tricolor Ribbon Bar -->
+            <div style="height: 3px; background: linear-gradient(90deg, #FF9933 33%, #CBD5E1 33%, #CBD5E1 66%, #138808 66%); border-radius: 2px; margin-bottom: 22px;"></div>
+
+            <!-- Lightweight Executive Metric Cards (Mine & Extraction Overview) -->
+            <div class="master-kpi-grid">
+              <div class="master-kpi-card" style="border-left-color: #059669;">
+                <div class="master-kpi-label">Annual Production Rate</div>
+                <div class="master-kpi-val" id="kpi-production" style="color: #047857;">52.50 MTPA</div>
+                <div class="master-kpi-sub" id="kpi-production-sub" style="color: #059669;">Target: 50.00 MTPA (+5.0%)</div>
+              </div>
+
+              <div class="master-kpi-card" style="border-left-color: #2563EB;">
+                <div class="master-kpi-label">Stripping Ratio (OB / Coal)</div>
+                <div class="master-kpi-val" id="kpi-stripping" style="color: #1D4ED8;">1.45 m³/T</div>
+                <div class="master-kpi-sub" id="kpi-stripping-sub" style="color: #2563EB;">Low Overburden (High Efficiency)</div>
+              </div>
+
+              <div class="master-kpi-card" style="border-left-color: #D97706;">
+                <div class="master-kpi-label">Total Recoverable Reserve</div>
+                <div class="master-kpi-val" id="kpi-reserves" style="color: #B45309;">550.0 MT</div>
+                <div class="master-kpi-sub" id="kpi-reserves-sub" style="color: #92400E;">Proved (111): 420.0 MT (76.4%)</div>
+              </div>
+
+              <div class="master-kpi-card" style="border-left-color: #7C3AED;">
+                <div class="master-kpi-label">Average Coal Quality</div>
+                <div class="master-kpi-val" id="kpi-gcv" style="color: #6D28D9;">5,417 kcal/kg</div>
+                <div class="master-kpi-sub" id="kpi-gcv-sub" style="color: #5B21B6;">Mean Ash: 26.6% • Grade G8</div>
+              </div>
+            </div>
+
+            <!-- Single Clear & Engaging Graph (Datatype Suitable) -->
+            <div class="master-single-chart-card mb-lg">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <h4 style="font-size: 0.96rem; font-weight: 800; color: #0F172A; margin: 0;" id="report-chart-title">
+                    📈 Mine Production Velocity & Stripping Telemetry (12-Month Performance)
+                  </h4>
+                  <div style="font-size: 0.78rem; color: #64748B;" id="report-chart-desc">
+                    Monthly raw coal extracted (MT) vs planned statutory targets and overburden removal
+                  </div>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn btn-secondary btn-xs" id="btn-chart-extract" onclick="DatabasePage.switchReportChartView('extraction')" style="font-weight: 600;">Monthly Extraction</button>
+                  <button class="btn btn-ghost btn-xs" id="btn-chart-seam" onclick="DatabasePage.switchReportChartView('seam')" style="font-weight: 600;">Seam GCV Profile</button>
+                </div>
+              </div>
+              <div style="height: 255px; position: relative;">
+                <canvas id="reportUnifiedChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Concise Seam Stratigraphy Summary (Light 5-Column Table) -->
+            <div class="mb-lg">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h4 style="font-size: 0.95rem; font-weight: 800; color: #0F172A; margin: 0;">
+                  📑 Workable Seam Horizons & Geological Parameters
+                </h4>
+                <span id="report-seams-count" style="font-size: 0.76rem; color: #64748B; font-weight: 600;">4 Verified Seam Horizons</span>
+              </div>
+
+              <div style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px;">
+                <table class="table" style="width: 100%; font-size: 0.84rem; margin: 0; background: #FFFFFF;">
+                  <thead>
+                    <tr style="background: #F1F5F9; color: #0F172A; border-bottom: 2px solid #CBD5E1;">
+                      <th style="padding: 10px 14px; font-weight: 700;">Seam Horizon</th>
+                      <th style="padding: 10px 14px; font-weight: 700;">Thickness (m)</th>
+                      <th style="padding: 10px 14px; font-weight: 700;">Calorific Value (GCV)</th>
+                      <th style="padding: 10px 14px; font-weight: 700;">Ash Content (%)</th>
+                      <th style="padding: 10px 14px; font-weight: 700;">Coal Grade & UNFC</th>
+                    </tr>
+                  </thead>
+                  <tbody id="report-seams-tbody">
+                    <!-- Dynamic Rows Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Statutory Clearances Status Strip (Light & Minimal) -->
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #854D0E; border-radius: 6px; padding: 12px 18px; margin-bottom: 22px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: center; font-size: 0.81rem; color: #334155;">
+                <div><strong style="color: #0F172A;">MoEFCC Clearance:</strong> <span id="note-ec">EC #J-11015/85 Valid till 2038</span></div>
+                <div><strong style="color: #0F172A;">DGMS Safety:</strong> <span id="note-dgms">Reg. 127 Barrier Compliant</span></div>
+                <div><strong style="color: #0F172A;">Extraction Method:</strong> <span id="note-method">Continuous Surface Miner</span></div>
+                <div><strong style="color: #0F172A;">Estimated Life:</strong> <span id="note-life">28 Years Remaining</span></div>
+              </div>
+            </div>
+
+            <!-- Official Geological Field Photogrammetry & Heavy Machinery Gallery (4K UHD) -->
+            <div class="mb-lg">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="font-size: 0.95rem; font-weight: 800; color: #0F172A; margin: 0;">
+                  📸 Verified Field Photogrammetry & Open Pit Telemetry (4K Field Inspection)
+                </h4>
+                <span style="font-size: 0.74rem; color: #64748B; font-weight: 600;">DGMS Drone & Satellite Ground Verification</span>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                <div style="border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                  <img src="assets/images/project_shovel_illuminated.jpg" alt="Electric Rope Shovel" style="width: 100%; height: 120px; object-fit: cover;" />
+                  <div style="padding: 8px 10px;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #0F172A;">Super Shovel #45 (42m³)</div>
+                    <div style="font-size: 0.70rem; color: #64748B;">Night shift raw coal face extraction with LED array</div>
+                  </div>
+                </div>
+
+                <div style="border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                  <img src="assets/images/project_bucketwheel_spreader.jpg" alt="Bucket Wheel Excavator" style="width: 100%; height: 120px; object-fit: cover;" />
+                  <div style="padding: 8px 10px;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #0F172A;">Continuous Bucket-Wheel</div>
+                    <div style="font-size: 0.70rem; color: #64748B;">Automated cross-pit overburden spreader</div>
+                  </div>
+                </div>
+
+                <div style="border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                  <img src="assets/images/project_deep_spiral_pit.jpg" alt="Deep Spiral Bench Pit" style="width: 100%; height: 120px; object-fit: cover;" />
+                  <div style="padding: 8px 10px;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #0F172A;">Deep Terraced Spiral Quarry</div>
+                    <div style="font-size: 0.70rem; color: #64748B;">Multi-bench strata with surface processing complex</div>
+                  </div>
+                </div>
+
+                <div style="border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                  <img src="assets/images/project_tall_bucketwheel.jpg" alt="High-Reach Bucket Wheel" style="width: 100%; height: 120px; object-fit: cover;" />
+                  <div style="padding: 8px 10px;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #0F172A;">Continuous Surface Bagger</div>
+                    <div style="font-size: 0.70rem; color: #64748B;">Multi-seam highwall cutting with support bulldozer</div>
+                  </div>
+                </div>
+
+                <div style="border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                  <img src="assets/images/project_amphitheater_mine.jpg" alt="Amphitheater Mine Basin" style="width: 100%; height: 120px; object-fit: cover;" />
+                  <div style="padding: 8px 10px;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #0F172A;">Amphitheater Basin Pit</div>
+                    <div style="font-size: 0.70rem; color: #64748B;">Spiral bench geometry & eco-canopy perimeter</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Formal Government Sign-Off Block -->
+            <div class="master-sign-grid">
+              <div class="master-sign-card">
+                <div style="font-size: 0.72rem; color: #64748B; text-transform: uppercase; font-weight: 700;">Compiled & Synthesized By</div>
+                <div style="font-size: 0.94rem; font-weight: 800; color: #0F172A; margin-top: 4px;">Dr. Rajesh Kumar</div>
+                <div style="font-size: 0.74rem; color: #854D0E;">Chief Geologist • CMPDI</div>
+                <div style="margin-top: 6px; font-size: 0.72rem; color: #047857; font-weight: 600;">✓ AI Neural Model Verified</div>
+              </div>
+
+              <div class="master-sign-card">
+                <div style="font-size: 0.72rem; color: #64748B; text-transform: uppercase; font-weight: 700;">Statutory Mine Planning Review</div>
+                <div style="font-size: 0.94rem; font-weight: 800; color: #0F172A; margin-top: 4px;">Smt. Priya Sharma</div>
+                <div style="font-size: 0.74rem; color: #1D4ED8;">GM (Mine Planning) • CMPDI HQ</div>
+                <div style="margin-top: 6px; font-size: 0.72rem; color: #047857; font-weight: 600;">✓ DGMS Barrier Cleared</div>
+              </div>
+
+              <div class="master-sign-card">
+                <div style="font-size: 0.72rem; color: #64748B; text-transform: uppercase; font-weight: 700;">Ministry Technical Approval</div>
+                <div style="font-size: 0.94rem; font-weight: 800; color: #0F172A; margin-top: 4px;">Shri Anil Verma</div>
+                <div style="font-size: 0.74rem; color: #047857;">Director (Technical) • MoC</div>
+                <div style="margin-top: 6px; font-size: 0.72rem; color: #047857; font-weight: 600;">✓ Official Gazette Registered</div>
+              </div>
+            </div>
+
+            <!-- Digital Seal & Cryptographic Hash Footer -->
+            <div style="margin-top: 18px; padding-top: 12px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: #64748B; flex-wrap: wrap; gap: 8px;">
+              <div class="flex align-center gap-xs">
+                <span style="color: #047857; font-weight: 700;">● Digitally Certified Copy</span>
+                <span>• Government of India Ministry of Coal</span>
+              </div>
+              <div id="report-security-hash" style="font-family: var(--font-mono); font-size: 0.68rem; color: #64748B;">
+                SHA-256: 7f4agevr99c2b81048f07a21620260909ef89a1027b4e
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- National Datasets Explorer (Structured Dataset, Document Repository, Boreholes) -->
+        <div class="card mb-xl" style="padding: 0; overflow: hidden;">
+          
+          <!-- Database Tabs Navigation Header -->
+          <div style="background: #0E1A33; border-bottom: 1.5px solid rgba(212, 168, 67, 0.3); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-gold btn-sm db-tab-btn active" id="tab-btn-structured" onclick="DatabasePage.switchTab('structured')" style="font-weight: 700;">
+                📊 Structured Ministry Dataset
+              </button>
+              <button class="btn btn-secondary btn-sm db-tab-btn" id="tab-btn-repository" onclick="DatabasePage.switchTab('repository')" style="font-weight: 700;">
+                📁 CMPDI_CIL_DATASET Files (Excel/PDF/Word)
+              </button>
+              <button class="btn btn-secondary btn-sm db-tab-btn" id="tab-btn-boreholes" onclick="DatabasePage.switchTab('boreholes')" style="font-weight: 700;">
+                ⛏️ Borehole Subsurface Archive (18,542)
+              </button>
+            </div>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <a href="CMPDI_CIL_DATASET/Excel/Production_Data.csv" download="Production_Data.csv" class="btn btn-ghost btn-sm" style="color: #D4A843; border: 1px solid #D4A843;">
+                📥 Download Production_Data.csv
+              </a>
+              <a href="CMPDI_CIL_DATASET/Excel/Coal_Statistics.csv" download="Coal_Statistics.csv" class="btn btn-ghost btn-sm" style="color: #10B981; border: 1px solid #10B981;">
+                📑 11 Ministry Chapters (CSV)
+              </a>
+            </div>
+          </div>
+
+          <!-- TAB 1: Structured Ministry Dataset -->
+          <div id="db-pane-structured" style="padding: 20px;">
+            
+            <!-- Quick Telemetry Highlight Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px;">
+              <div class="card" style="border-top: 3px solid #10B981; padding: 14px; background: #111C35;">
+                <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">CIL Production (2024-25)</div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: #10B981; font-family: var(--font-mono);">781.06 MT</div>
+                <div style="font-size: 0.72rem; color: #CBD5E1; margin-top: 2px;">Coal Directory 2024–25 Official</div>
+              </div>
+
+              <div class="card" style="border-top: 3px solid #3B82F6; padding: 14px; background: #111C35;">
+                <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">SCCL Production (2024-25)</div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: #60A5FA; font-family: var(--font-mono);">69.006 MT</div>
+                <div style="font-size: 0.72rem; color: #CBD5E1; margin-top: 2px;">Singareni Collieries Company</div>
+              </div>
+
+              <div class="card" style="border-top: 3px solid #F59E0B; padding: 14px; background: #111C35;">
+                <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Captive & Commercial</div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: #FBBF24; font-family: var(--font-mono);">138.50 MT</div>
+                <div style="font-size: 0.72rem; color: #CBD5E1; margin-top: 2px;">161 Commercial Blocks</div>
+              </div>
+
+              <div class="card" style="border-top: 3px solid #D4A843; padding: 14px; background: #111C35;">
+                <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">All-India Grand Total</div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: #F5D77F; font-family: var(--font-mono);">988.57 MT</div>
+                <div style="font-size: 0.72rem; color: #10B981; margin-top: 2px;">Historic National Record</div>
+              </div>
+            </div>
+
+            <!-- Structured Dataset Filter Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--color-gold-light);">Filter Year:</span>
+                <select id="prod-filter-year" class="form-select" style="width: auto; font-size: 0.82rem; padding: 4px 10px;" onchange="DatabasePage.filterProductionTable()">
+                  <option value="ALL">All Years (2022-23 to 2024-25)</option>
+                  <option value="2024-25" selected>2024–25 (Latest Coal Directory)</option>
+                  <option value="2023-24">2023–24</option>
+                  <option value="2022-23">2022–23</option>
+                </select>
+
+                <span style="font-size: 0.82rem; font-weight: 700; color: var(--color-gold-light); margin-left: 8px;">Company:</span>
+                <select id="prod-filter-company" class="form-select" style="width: auto; font-size: 0.82rem; padding: 4px 10px;" onchange="DatabasePage.filterProductionTable()">
+                  <option value="ALL">All Companies (CIL, SCCL, Captive)</option>
+                  <option value="CIL">Coal India Limited (CIL Total & Subs)</option>
+                  <option value="SCCL">Singareni Collieries (SCCL)</option>
+                  <option value="Captive">Captive & Commercial</option>
+                </select>
+              </div>
+
+              <div style="font-size: 0.8rem; color: #94A3B8;">
+                Source: <strong>Ministry of Coal — 11 Official Statistical Chapters</strong>
+              </div>
+            </div>
+
+            <!-- Structured Dataset Table -->
+            <div style="overflow-x: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
+              <table class="table" style="width: 100%; font-size: 0.84rem; margin: 0;">
+                <thead>
+                  <tr style="background: #0E1A33; color: #F1F5F9;">
+                    <th>Year</th>
+                    <th>Company</th>
+                    <th>State</th>
+                    <th>Coal Type</th>
+                    <th style="text-align: right;">Production (MT)</th>
+                    <th style="text-align: right;">Offtake / Dispatch (MT)</th>
+                    <th>Mine / Project Scope</th>
+                  </tr>
+                </thead>
+                <tbody id="prod-dataset-tbody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 2: Document Dataset Repository (CMPDI_CIL_DATASET) -->
+          <div id="db-pane-repository" style="display: none; padding: 24px;">
+            <div style="margin-bottom: 20px;">
+              <h3 style="font-size: 1.1rem; color: #F5D77F; margin: 0 0 6px 0;">
+                📁 Authentic Prototype Repository — CMPDI_CIL_DATASET
+              </h3>
+              <p style="font-size: 0.84rem; color: #94A3B8; margin: 0;">
+                Organized collection of authentic government statistics, directory PDFs, word archives, and scanned lithologs.
+              </p>
+            </div>
+
+            <!-- Pipeline Infographic -->
+            <div style="background: #111C35; border: 1px solid rgba(212, 168, 67, 0.3); border-radius: 8px; padding: 14px 20px; margin-bottom: 24px;">
+              <div style="font-size: 0.75rem; font-weight: 800; color: #D4A843; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
+                ⚡ Sovereign AI Document Ingestion & Retrieval Pipeline:
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 0.82rem; font-weight: 700;">
+                <span style="background: rgba(59,130,246,0.2); border: 1px solid #3B82F6; padding: 6px 12px; border-radius: 6px; color: #93C5FD;">📄 PDF Documents</span>
+                <span style="color: #D4A843;">➔</span>
+                <span style="background: rgba(245,158,11,0.2); border: 1px solid #F59E0B; padding: 6px 12px; border-radius: 6px; color: #FDE68A;">🔍 OCR / Text Extraction</span>
+                <span style="color: #D4A843;">➔</span>
+                <span style="background: rgba(139,92,246,0.2); border: 1px solid #8B5CF6; padding: 6px 12px; border-radius: 6px; color: #DDD6FE;">🧠 Neural AI Parsing</span>
+                <span style="color: #D4A843;">➔</span>
+                <span style="background: rgba(16,185,129,0.2); border: 1px solid #10B981; padding: 6px 12px; border-radius: 6px; color: #A7F3D0;">📚 Vector Knowledge Base</span>
+                <span style="color: #D4A843;">➔</span>
+                <span style="background: rgba(212,168,67,0.2); border: 1px solid #D4A843; padding: 6px 12px; border-radius: 6px; color: #F5D77F;">💬 Dyuti AI Chatbot</span>
+              </div>
+            </div>
+
+            <!-- Folder Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
+              
+              <!-- Excel Folder -->
+              <div class="card" style="background: #111C35; border: 1px solid #334155; padding: 18px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                  <span style="font-size: 1.5rem;">📊</span>
+                  <div>
+                    <h4 style="margin: 0; color: #10B981; font-size: 0.95rem;">📁 Excel Datasets</h4>
+                    <span style="font-size: 0.72rem; color: #94A3B8;">Structured Statistical Tables</span>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.82rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0,0,0,0.25); border-radius: 6px;">
+                    <span>📈 <strong>Production_Data.xlsx</strong></span>
+                    <a href="CMPDI_CIL_DATASET/Excel/Production_Data.xlsx" download="Production_Data.xlsx" class="btn btn-secondary btn-xs">Download</a>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0,0,0,0.25); border-radius: 6px;">
+                    <span>📑 <strong>Coal_Statistics.xlsx</strong> (11 Ch.)</span>
+                    <a href="CMPDI_CIL_DATASET/Excel/Coal_Statistics.xlsx" download="Coal_Statistics.xlsx" class="btn btn-secondary btn-xs">Download</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PDF Folder -->
+              <div class="card" style="background: #111C35; border: 1px solid #334155; padding: 18px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                  <span style="font-size: 1.5rem;">📕</span>
+                  <div>
+                    <h4 style="margin: 0; color: #EF4444; font-size: 0.95rem;">📁 PDF Directories</h4>
+                    <span style="font-size: 0.72rem; color: #94A3B8;">Official Coal Directories (MoC)</span>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.82rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0,0,0,0.25); border-radius: 6px;">
+                    <span>📕 <strong>Coal_Directory_2024_25.pdf</strong></span>
+                    <div style="display: flex; gap: 6px;">
+                      <a href="CMPDI_CIL_DATASET/PDF/Coal_Directory_2024_25.pdf" download class="btn btn-secondary btn-xs">PDF</a>
+                      <a href="upload.html?sample=directory" class="btn btn-primary btn-xs">OCR Test</a>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0,0,0,0.25); border-radius: 6px;">
+                    <span>📕 <strong>Coal_Directory_2023_24.pdf</strong></span>
+                    <a href="CMPDI_CIL_DATASET/PDF/Coal_Directory_2023_24.pdf" download class="btn btn-secondary btn-xs">PDF</a>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0,0,0,0.25); border-radius: 6px;">
+                    <span>📕 <strong>Coal_Directory_2022_23.pdf</strong></span>
+                    <a href="CMPDI_CIL_DATASET/PDF/Coal_Directory_2022_23.pdf" download class="btn btn-secondary btn-xs">PDF</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Word & Scanned Folder -->
+              <div class="card" style="background: #111C35; border: 1px solid #334155; padding: 18px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                  <span style="font-size: 1.5rem;">📑</span>
+                  <div>
+                    <h4 style="margin: 0; color: #3B82F6; font-size: 0.95rem;">📁 Word & Scanned Reports</h4>
+                    <span style="font-size: 0.72rem; color: #94A3B8;">Historical Logs & Borehole Scans</span>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.82rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0,0,0,0.25); border-radius: 6px;">
+                    <span>📘 <strong>Historical_Report.docx</strong></span>
+                    <a href="CMPDI_CIL_DATASET/Word/Historical_Report.docx" download class="btn btn-secondary btn-xs">Download</a>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0,0,0,0.25); border-radius: 6px;">
+                    <span>📷 <strong>Sample_Scanned_Report.pdf</strong></span>
+                    <div style="display: flex; gap: 6px;">
+                      <a href="CMPDI_CIL_DATASET/Images_Scanned/Sample_Scanned_Report.pdf" download class="btn btn-secondary btn-xs">PDF</a>
+                      <a href="upload.html?sample=jharia" class="btn btn-primary btn-xs">OCR Test</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- TAB 3: Borehole Subsurface Database (18,542 Records) -->
+          <div id="db-pane-boreholes" style="display: none; padding: 20px;">
+            <div class="flex flex-between align-center flex-wrap gap-md mb-md">
+              <div>
+                <h4 style="margin: 0; color: #F8FAFC; font-size: 0.95rem;">18,542 Master Core Boreholes (1975 - 2026)</h4>
+                <div style="font-size: 0.78rem; color: var(--color-text-secondary);">Subsurface depth, seam intersections, and UNFC classifications</div>
+              </div>
+              <div class="flex gap-xs flex-wrap">
+                <select class="form-select" style="width: auto; font-size: 0.82rem;" id="filter-sub" onchange="DatabasePage.applyFilters()">
+                  <option value="ALL">All Subsidiaries (8)</option>
+                  <option value="BCCL">BCCL — Jharia</option>
+                  <option value="SECL">SECL — Korba</option>
+                  <option value="MCL">MCL — Talcher</option>
+                  <option value="CCL">CCL — Ranchi</option>
+                  <option value="NCL">NCL — Singrauli</option>
+                  <option value="ECL">ECL — Raniganj</option>
+                  <option value="WCL">WCL — Nagpur</option>
+                  <option value="NEC">NEC — Assam</option>
+                </select>
+                <select class="form-select" style="width: auto; font-size: 0.82rem;" id="filter-type" onchange="DatabasePage.applyFilters()">
+                  <option value="ALL">All Document Types</option>
+                  <option value="borehole">Borehole Lithologs</option>
+                  <option value="reserve">UNFC Reserve Assays</option>
+                  <option value="compliance">Statutory Clearances</option>
+                </select>
+                <button class="btn btn-secondary btn-sm" onclick="DatabasePage.exportFilteredCSV()">💾 Export CSV</button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto; max-height: 480px; overflow-y: auto;">
+              <table class="table" style="font-size: 0.85rem;">
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Subsidiary</th>
+                    <th>Mine Block / Coalfield</th>
+                    <th>Borehole ID / GR Ref</th>
+                    <th>Drilled Depth (m)</th>
+                    <th>Coal Seams / Quality</th>
+                    <th>UNFC Status</th>
+                    <th>Year</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="master-db-rows">
+                  <!-- Rows populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="govt-footer-mount"></div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/data/boreholes.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/database.js"></script>
+</body>
+</html>

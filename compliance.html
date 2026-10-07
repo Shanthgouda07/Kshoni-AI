@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Statutory Compliance Auditor — Automated MoEFCC, DGMS, and Ministry of Coal Regulatory Audits">
+    <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+    <meta name="robots" content="noindex, nofollow">
+  <title>Statutory Compliance Auditor | Kshoni AI • CMPDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <div id="govt-top-header-mount"></div>
+  <div class="app-layout">
+    <!-- Sidebar dynamically rendered -->
+    <div id="sidebar-mount"></div>
+
+    <main class="main-content">
+      <!-- Header dynamically rendered -->
+      <div id="header-mount"></div>
+
+      <div class="content-body">
+        
+        <!-- Top Stats Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);" class="mb-lg">
+          <div class="card" style="border-top: 3px solid var(--color-gold);">
+            <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; font-weight: 600;">Total Audited Checks</div>
+            <div style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: var(--color-gold);" id="stat-total-checks">8</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Covering 8 CIL Subsidiaries</div>
+          </div>
+          
+          <div class="card" style="border-top: 3px solid #10B981;">
+            <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; font-weight: 600;">Passed / Fully Compliant</div>
+            <div style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: #10B981;" id="stat-passed-checks">5</div>
+            <div style="font-size: 0.75rem; color: #10B981; margin-top: 4px;">✓ Statutory Standards Met</div>
+          </div>
+
+          <div class="card" style="border-top: 3px solid #F59E0B;">
+            <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; font-weight: 600;">Warnings / Action Due</div>
+            <div style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: #F59E0B;" id="stat-warning-checks">2</div>
+            <div style="font-size: 0.75rem; color: #F59E0B; margin-top: 4px;">⚠️ Remedial Action Advised</div>
+          </div>
+
+          <div class="card" style="border-top: 3px solid #EF4444;">
+            <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; font-weight: 600;">Critical Non-Compliance</div>
+            <div style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: #EF4444;" id="stat-failed-checks">1</div>
+            <div style="font-size: 0.75rem; color: #EF4444; margin-top: 4px;">🚨 DGMS Stop Work Danger</div>
+          </div>
+
+          <div class="card" style="border-top: 3px solid #3B82F6;">
+            <div style="font-size: 0.8rem; color: var(--text-tertiary); text-transform: uppercase; font-weight: 600;">National Compliance Index</div>
+            <div style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: #3B82F6;" id="stat-avg-score">92.4%</div>
+            <div style="font-size: 0.75rem; color: #3B82F6; margin-top: 4px;">📈 Aggregate Score</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 340px; gap: var(--spacing-lg);">
+          
+          <!-- Main Checklist Panel -->
+          <div>
+            
+            <!-- Filters Toolbar -->
+            <div class="card mb-md" style="padding: 14px 18px;">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Authority:</span>
+                  <select class="form-select" style="width: auto; font-size: 0.82rem; padding: 4px 8px;" onchange="ComplianceEngine.filterByAuthority(this.value)">
+                    <option value="all">All Authorities (MoEFCC, DGMS, MoC, CMPDI)</option>
+                    <option value="moefcc">MoEFCC (Environment & Forest)</option>
+                    <option value="dgms">DGMS (Mines Safety)</option>
+                    <option value="moc">Ministry of Coal (MoC)</option>
+                    <option value="cmpdi">CMPDI (Geological Quality)</option>
+                  </select>
+
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-left: 8px;">Status:</span>
+                  <select class="form-select" style="width: auto; font-size: 0.82rem; padding: 4px 8px;" onchange="ComplianceEngine.filterByStatus(this.value)">
+                    <option value="all">All Statuses</option>
+                    <option value="pass">Passed Only</option>
+                    <option value="warning">Action Required Only</option>
+                    <option value="fail">Critical Failures Only</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-secondary btn-sm" onclick="App.exportDatasetCSV('compliance')">
+                    📊 Export Audit CSV
+                  </button>
+                  <button class="btn btn-primary btn-sm" id="btn-run-audit" onclick="ComplianceEngine.runFullAudit()">
+                    ✨ Run Statutory AI Audit
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Checklist Container -->
+            <div id="compliance-checklist-container"></div>
+          </div>
+
+          <!-- Right Sidebar: Subsidiary Health & Clearance Certificate Generator -->
+          <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+            
+            <div class="card">
+              <div class="card-header" style="padding-bottom: 8px;">
+                <h3 class="card-title">Clearance Certificate</h3>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 12px;">
+                Generate an official, digitally signed Statutory Compliance Certificate for submission to MoC / CMPDI Board.
+              </p>
+              <button class="btn btn-gold w-full btn-sm" onclick="ComplianceEngine.openCertificateModal()">
+                📜 Generate Certificate
+              </button>
+            </div>
+
+            <div class="card">
+              <div class="card-header" style="padding-bottom: 8px;">
+                <h3 class="card-title">Subsidiary Health Scorecard</h3>
+              </div>
+              <div id="subsidiary-scores-container"></div>
+            </div>
+
+            <div class="card" style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2);">
+              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <span style="font-size: 1.3rem;">🛡️</span>
+                <div>
+                  <h4 style="margin: 0; font-size: 0.9rem; color: #10B981; font-weight: 600;">Statutory Protection System</h4>
+                  <p style="margin: 4px 0 0 0; font-size: 0.78rem; color: var(--text-secondary);">
+                    AI continuously scans Geological Reports (GR), mine hydrogeology, and borehole data against DGMS Regulation 127 and EC guidelines to prevent compliance breaches before statutory filing.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+  <div id="govt-footer-mount"></div>
+
+  <!-- Certificate View Modal -->
+  <div id="cert-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; padding: 20px;">
+    <div class="card" style="max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; background: #0A1628; border: 2px solid var(--color-gold); box-shadow: 0 0 40px rgba(212,168,67,0.3); padding: 30px;">
+      
+      <!-- Govt Seal Header -->
+      <div style="text-align: center; border-bottom: 2px dashed var(--color-gold); padding-bottom: 16px; margin-bottom: 20px;">
+        <div style="font-size: 1.8rem; margin-bottom: 4px;">🏛️</div>
+        <div style="font-weight: 800; font-size: 1.1rem; color: var(--color-gold); letter-spacing: 1px; text-transform: uppercase;">GOVERNMENT OF INDIA • MINISTRY OF COAL</div>
+        <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-top: 2px;">Central Mine Planning & Design Institute (CMPDI HQ, Ranchi)</div>
+        <div style="font-size: 0.75rem; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 6px;">REF: CMPDI/AI-AUDIT/2026/SEC-0894</div>
+      </div>
+
+      <!-- Certificate Body -->
+      <div style="line-height: 1.6; font-size: 0.9rem; color: var(--text-secondary);">
+        <h3 style="text-align: center; color: var(--text-primary); margin-bottom: 16px; font-weight: 700;">STATUTORY GEOLOGICAL COMPLIANCE CERTIFICATE</h3>
+        <p>
+          This is to certify that an autonomous AI Statutory Audit was conducted by <strong>Kshoni AI Engine</strong> across the coal reserves and mining blocks of Coal India Limited (CIL) subsidiaries as of <strong>March 2026</strong>.
+        </p>
+
+        <div style="background: rgba(255,255,255,0.04); border-radius: 6px; padding: 12px; margin: 16px 0;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span>Overall Statutory Compliance Index:</span>
+            <strong style="color: #10B981; font-family: var(--font-mono);">88.2% (Grade A - Satisfactory)</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span>UNFC 111 Proved Reserves Verified:</span>
+            <strong style="color: var(--color-gold); font-family: var(--font-mono);">12,450.50 Million Tonnes</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Critical Remediation Advisories:</span>
+            <strong style="color: #EF4444; font-family: var(--font-mono);">1 Flagged Block (BCCL Katras UG)</strong>
+          </div>
+        </div>
+
+        <p style="font-size: 0.82rem; color: var(--text-tertiary);">
+          Issued under digital authorization of CMPDI Geological Quality Control Directorate. QR Code verification enables tamper-proof statutory validation.
+        </p>
+      </div>
+
+      <!-- Footer & Signatures -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 24px; pt-md; border-top: 1px solid var(--border-color);">
+        <div style="text-align: center;">
+          <div style="font-size: 1.5rem;">📱</div>
+          <div style="font-size: 0.65rem; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 2px;">SCAN TO VERIFY</div>
+        </div>
+
+        <div style="text-align: right;">
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-gold);">[DIGITALLY SIGNED VIA BHOO-MITRA AI]</div>
+          <div style="font-weight: 700; color: var(--text-primary); margin-top: 4px;">Dr. Rajesh Kumar</div>
+          <div style="font-size: 0.75rem; color: var(--text-tertiary);">Chief General Manager (Geology), CMPDI</div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+        <button class="btn btn-secondary btn-sm" onclick="ComplianceEngine.closeCertificateModal()">Close</button>
+        <button class="btn btn-gold btn-sm" onclick="ComplianceEngine.downloadCertificate()">🖨️ Print / Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/data/boreholes.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/compliance.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('sidebar-mount').innerHTML = App.buildSidebar('compliance');
+      document.getElementById('header-mount').innerHTML = App.buildPageHeader(
+        'Statutory Compliance Auditor',
+        'AI-assisted audit against MoEFCC, DGMS, and Ministry of Coal guidelines',
+        '<span class="badge badge-emerald"><span class="status-dot online"></span> Active AI Monitor</span>'
+      );
+      
+      ComplianceEngine.init();
+      App.setupMobileMenu();
+    });
+  </script>
+</body>
+</html>

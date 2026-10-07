@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kshoni AI — Document Upload & OCR Geological Data Extraction">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Document Upload & OCR | Kshoni AI • CMPDI</title>
+  <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" integrity="sha256-btZ5l1S/AgPpOCJU6IiheHgp/w5eeUCPZpNHQdl/mEI=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="govt-top-header-mount"></div>
+  <div class="app-layout">
+    <!-- Sidebar dynamically rendered -->
+    <div id="sidebar-mount"></div>
+
+    <main class="main-content">
+      <!-- Header dynamically rendered -->
+      <div id="header-mount"></div>
+
+      <div class="content-body">
+        <!-- Page Banner -->
+        <div class="card mb-xl bg-gradient" style="background: linear-gradient(135deg, rgba(15,31,56,0.9), rgba(30,58,95,0.6)); border-color: rgba(212,168,67,0.3);">
+          <div class="flex flex-between align-center">
+            <div>
+              <div class="inline-flex align-center gap-xs mb-xs" style="color: var(--color-gold);">
+                <span>✨</span> <span style="font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase;">AI Document Ingestion & Extraction Pipeline</span>
+              </div>
+              <h2 style="font-size: 1.5rem; margin-bottom: 4px;">Official Ministry Directory & Borehole Digitizer</h2>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Execute the authentic document pipeline: <strong>PDF Document ➔ OCR / Text Extraction ➔ Neural AI ➔ Knowledge Base ➔ Dyuti AI Chat</strong>. Ingest ministry directories or scanned field lithologs directly into the sovereign vector graph.
+              </p>
+            </div>
+            <div class="flex gap-sm flex-wrap">
+              <button class="btn btn-gold btn-sm" onclick="UploadPage.loadSample('directory')">📕 Load Coal Directory 2024–25</button>
+              <button class="btn btn-secondary btn-sm" onclick="UploadPage.loadSample('jharia')">📋 Load Scanned BH-042 Log</button>
+              <button class="btn btn-secondary btn-sm" onclick="UploadPage.loadSample('korba')">📊 Load Korba Excel Log</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-container">
+          <!-- Left Column: Upload Dropzone & Process Controls -->
+          <div>
+            <div class="card mb-lg">
+              <div class="card-header">
+                <h3 class="card-title">1. Upload Source Document</h3>
+                <span class="badge badge-info">PDF, PNG, JPG, XLSX, CSV</span>
+              </div>
+
+              <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+                <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg,.xlsx,.csv" onchange="UploadPage.handleFileSelect(event)">
+                <div class="dropzone-icon">📥</div>
+                <h4 style="margin-bottom: 6px; font-size: 1.1rem;">Drag & Drop Geological Log File Here</h4>
+                <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 16px;">Supports scanned borehole lithologs, coal quality assays, and Geological Reports (GR)</p>
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); document.getElementById('file-input').click()">Browse Local Files</button>
+              </div>
+
+              <div id="file-preview-area" style="display: none; margin-top: 16px;">
+                <div class="file-preview-item">
+                  <div class="file-preview-icon" id="file-icon">📄</div>
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 0.95rem;" id="file-name">Borehole_Log_BH42_Jharia.pdf</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);" id="file-meta">2.4 MB • 4 Pages • Scanned PDF (300 DPI)</div>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" onclick="UploadPage.resetUpload()">✕ Remove</button>
+                </div>
+
+                <div class="mt-lg">
+                  <div class="flex flex-between align-center mb-xs">
+                    <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold-light);" id="ocr-status-text">Ready for AI Extraction</span>
+                    <span style="font-size: 0.85rem; font-family: var(--font-mono); color: var(--color-emerald);" id="ocr-percentage">0%</span>
+                  </div>
+                  <div class="ocr-progress-bar">
+                    <div class="ocr-progress-fill" id="ocr-progress-fill"></div>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 6px;" id="ocr-step-desc">Click 'Start AI OCR Processing' to initiate extraction pipeline.</div>
+                </div>
+
+                <div class="flex gap-md mt-lg">
+                  <button class="btn btn-primary w-full" id="btn-process-ocr" onclick="UploadPage.startOCRProcess()">🚀 Start AI OCR Processing</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- OCR Pipeline Stages Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">AI Pipeline Steps</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="flex align-center gap-md" id="step-1-indicator" style="opacity: 0.5;">
+                  <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem;">1</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Document Bounding & Layout Parsing</div>
+                    <div style="font-size: 0.78rem; color: var(--text-tertiary);">Detects header tables, borehole metadata, and lithology columns</div>
+                  </div>
+                </div>
+                <div class="flex align-center gap-md" id="step-2-indicator" style="opacity: 0.5;">
+                  <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem;">2</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Handwriting & OCR Text Recognition</div>
+                    <div style="font-size: 0.78rem; color: var(--text-tertiary);">Converts scanned lithological descriptions (Sandstone, Shale, Seam)</div>
+                  </div>
+                </div>
+                <div class="flex align-center gap-md" id="step-3-indicator" style="opacity: 0.5;">
+                  <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem;">3</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Geological Entity Normalization</div>
+                    <div style="font-size: 0.78rem; color: var(--text-tertiary);">Maps seam nomenclature (e.g. Seam V/VI) to UNFC & CMPDI code standards</div>
+                  </div>
+                </div>
+                <div class="flex align-center gap-md" id="step-4-indicator" style="opacity: 0.5;">
+                  <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem;">4</div>
+                  <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Anomaly Detection & Cross-Validation</div>
+                    <div style="font-size: 0.78rem; color: var(--text-tertiary);">Checks GCV vs. Ash% physical limits & depth continuity</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Extracted Results Preview & Anomaly Alerts -->
+          <div>
+            <div class="card mb-lg" id="results-card" style="display: none;">
+              <div class="card-header flex flex-between align-center">
+                <div>
+                  <h3 class="card-title">2. Extracted Lithology & Seam Quality</h3>
+                  <div style="font-size: 0.8rem; color: var(--color-emerald); font-weight: 500;" id="extraction-summary">BH-042 (Jharia Block IX) • 12 Layers Extracted • Confidence: 97.4%</div>
+                </div>
+                <div class="flex gap-xs">
+                  <button class="btn btn-ghost btn-sm" onclick="UploadPage.exportCSV()">💾 CSV</button>
+                  <button class="btn btn-primary btn-sm" onclick="UploadPage.commitToDB()">✅ Commit to DB</button>
+                </div>
+              </div>
+
+              <!-- Anomaly Banner -->
+              <div class="alert alert-warning mb-md" id="anomaly-alert" style="display: none;">
+                <div class="alert-title">⚠️ AI Anomaly Detected in Row #4</div>
+                <div style="font-size: 0.82rem;">Seam-IX shows Ash% of 48.2% but GCV of 5,850 kcal/kg, which violates physical correlation limits. Recommended correction applied automatically.</div>
+              </div>
+
+              <div style="overflow-x: auto; max-height: 420px; overflow-y: auto;">
+                <table class="extracted-data-table">
+                  <thead>
+                    <tr>
+                      <th>Depth From (m)</th>
+                      <th>Depth To (m)</th>
+                      <th>Thickness (m)</th>
+                      <th>Strata Lithology</th>
+                      <th>Seam ID</th>
+                      <th>Ash %</th>
+                      <th>GCV (kcal/kg)</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="extracted-rows">
+                    <!-- Dynamic Rows populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="flex flex-between align-center mt-md pt-md" style="border-top: 1px solid var(--border-color);">
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                  <span>Total Seam Thickness: <strong style="color: var(--color-gold-light);" id="total-seam-thickness">18.4 m</strong></span> | 
+                  <span>Avg GCV: <strong style="color: var(--color-emerald);" id="avg-gcv">4,920 kcal/kg</strong></span>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="UploadPage.addNewRow()">+ Add Manual Row</button>
+              </div>
+            </div>
+
+            <!-- Empty Placeholder state before upload -->
+            <div class="card text-center" id="empty-state-card" style="padding: 60px 20px;">
+              <div style="font-size: 3rem; margin-bottom: 12px; opacity: 0.5;">📊</div>
+              <h3 style="margin-bottom: 8px; font-size: 1.1rem;">No Document Processed Yet</h3>
+              <p style="color: var(--text-tertiary); font-size: 0.88rem; max-width: 360px; margin: 0 auto 20px;">Upload a scanned borehole log or load a sample dataset on the left to view AI extraction results, quality parameters, and anomaly flags.</p>
+              <button class="btn btn-secondary btn-sm" onclick="UploadPage.loadSample('jharia')">⚡ Quick Test with Jharia Sample</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="govt-footer-mount"></div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/data/boreholes.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>

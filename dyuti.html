@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dyuti AI Chatbot — Conversational Geological & Mining Knowledge Assistant for CIL & CMPDI">
+    <link rel="icon" href="assets/images/kshoni_logo.svg" type="image/svg+xml">
+    <meta name="robots" content="noindex, nofollow">
+  <title>Dyuti AI Chatbot | द्युति • Kshoni AI • CMPDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="govt-top-header-mount"></div>
+  <div class="app-layout">
+    <!-- Sidebar dynamically rendered -->
+    <div id="sidebar-mount"></div>
+
+    <main class="main-content">
+      <!-- Header dynamically rendered -->
+      <div id="header-mount"></div>
+
+      <div class="content-body">
+        <!-- Chat Layout -->
+        <div class="chat-layout">
+          <!-- Main Chat Panel -->
+          <div class="chat-main">
+            <!-- Header bar inside chat -->
+            <div style="padding: 14px 20px; border-bottom: 1px solid var(--border-color); background: var(--bg-tertiary); display: flex; align-items: center; justify-content: space-between;">
+              <div class="flex align-center gap-sm">
+                <div style="width: 32px; height: 32px; background: #0F172A; border: 1px solid #D4A843; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <img src="assets/images/coal_lump.svg" alt="Dyuti Coal Icon" style="width: 20px; height: 20px;" />
+                </div>
+                <div>
+                  <span style="font-weight: 700; font-size: 0.95rem;">Dyuti AI Geological Chatbot (द्युति)</span>
+                  <span style="font-size: 0.78rem; color: var(--text-tertiary); margin-left: 8px;" id="ai-engine-status-badge">● <span style="color:var(--color-gold); font-weight:600;">Offline Mode:</span> Built-in CMPDI Knowledge</span>
+                </div>
+              </div>
+              <div class="flex gap-xs">
+                <button class="btn btn-secondary btn-sm" onclick="App.openAISettingsModal()" title="AI Model & OpenRouter Free Key Settings" style="border-color: rgba(212,168,67,0.4);">⚙️ AI Engine Settings</button>
+                <button class="btn btn-ghost btn-sm" onclick="DyutiPage.clearChat()" title="Clear Chat">🗑️ Clear</button>
+                <button class="btn btn-ghost btn-sm" onclick="App.showToast('Transcript exported to PDF', 'success')" title="Export Conversation">📥 Export</button>
+              </div>
+            </div>
+
+            <!-- Pre-built Quick Prompt Suggestions -->
+            <div style="padding: 12px 20px; background: rgba(15,23,42,0.6); border-bottom: 1px solid var(--border-color); display: flex; gap: 8px; overflow-x: auto; white-space: nowrap;">
+              <span style="font-size: 0.78rem; color: var(--text-tertiary); display: flex; align-items: center; font-weight: 600;">Suggested:</span>
+              <button class="prompt-pill" onclick="DyutiPage.sendSuggested('What is the proved coal reserve in BCCL Jharia coalfield?')">📊 BCCL Jharia Proved Reserves</button>
+              <button class="prompt-pill" onclick="DyutiPage.sendSuggested('List top coal seams by GCV in SECL Korba region')">🔥 SECL Korba High GCV Seams</button>
+              <button class="prompt-pill" onclick="DyutiPage.sendSuggested('Compare stripping ratio between MCL Talcher and CCL Amrapali')">⚖️ Stripping Ratio Comparison</button>
+              <button class="prompt-pill" onclick="DyutiPage.sendSuggested('Show UNFC 111 vs 122 breakdown across all CIL subsidiaries')">🏷️ UNFC Category Rollup</button>
+            </div>
+
+            <!-- Messages Stream -->
+            <div class="chat-messages" id="chat-messages">
+              <!-- Initial Welcome Message -->
+              <div class="chat-msg assistant">
+                <div class="chat-msg-avatar" style="background: #0F172A; border: 1px solid #D4A843;">
+                  <img src="assets/images/coal_lump.svg" alt="Dyuti Coal Icon" style="width: 24px; height: 24px;" />
+                </div>
+                <div style="flex: 1;">
+                  <div class="chat-msg-bubble">
+                    <p style="font-weight: 700; color: var(--color-gold-light); margin-bottom: 4px;">Namaste! I am Dyuti AI (द्युति).</p>
+                    <p style="font-size: 0.88rem; margin-bottom: 8px; color: #CBD5E1;">Conversational geological intelligence assistant for CMPDI & Ministry of Coal. Select a suggested topic below or type your query:</p>
+                    <div class="chat-suggested-prompts" style="margin-top:8px; padding-top:6px; border-top:1px dashed rgba(212,168,67,0.3);">
+                      <div style="font-size:0.75rem; color:var(--color-gold-light); font-weight:700; margin-bottom:6px;">💡 Suggested Questions:</div>
+                      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        <button class="prompt-pill" onclick="DyutiPage.sendSuggested('What is the proved coal reserve in BCCL Jharia?', 'chat-messages', 'chat-user-input')">📊 BCCL Jharia Reserves</button>
+                        <button class="prompt-pill" onclick="DyutiPage.sendSuggested('List top coal seams by GCV in SECL Korba', 'chat-messages', 'chat-user-input')">🔥 Korba GCV Assays</button>
+                        <button class="prompt-pill" onclick="DyutiPage.sendSuggested('Compare stripping ratio between MCL Talcher and CCL Amrapali', 'chat-messages', 'chat-user-input')">⚖️ Stripping Ratio</button>
+                        <button class="prompt-pill" onclick="DyutiPage.sendSuggested('Explain UNFC 111 vs 122 reserves', 'chat-messages', 'chat-user-input')">🏷️ UNFC Reserves</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Typing Indicator (hidden by default) -->
+            <div id="typing-indicator" style="display: none; padding: 10px 20px; font-size: 0.85rem; color: var(--color-gold-light);" class="flex align-center gap-xs">
+              <span class="loading-spinner"></span> <span>Dyuti AI is retrieving vector embeddings & synthesizing verified answer...</span>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-area">
+              <button class="btn btn-ghost btn-icon" onclick="DyutiPage.simulateVoiceInput()" title="Voice Search (Hindi/English)">🎙️</button>
+              <input type="text" class="chat-input" id="chat-user-input" placeholder="Ask Dyuti AI any geological, reserve estimation, or statutory query..." onkeypress="if(event.key==='Enter') DyutiPage.sendMessage()">
+              <button class="btn btn-primary" onclick="DyutiPage.sendMessage()">Send ➔</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="govt-footer-mount"></div>
+
+  <script src="js/data/subsidiaries.js"></script>
+  <script src="js/data/boreholes.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dyuti.js"></script>
+</body>
+</html>
